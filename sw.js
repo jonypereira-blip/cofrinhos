@@ -1,6 +1,8 @@
-const CACHE_NAME = "cofrinhos-fase3-1-pwa-v1";
+const CACHE_NAME = "cofrinhos-fase3-1-pwa-v2";
 
 const APP_SHELL = [
+    "./",
+    "./index.html",
     "./Cofrinhos_Fase3_1_Periodicidade.html",
     "./manifest.webmanifest",
     "./assets/icons/icon-192.png",
