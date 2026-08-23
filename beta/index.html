@@ -1,0 +1,4390 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<link rel="manifest" href="manifest.webmanifest">
+
+<meta name="theme-color" content="#FFF8EE">
+
+<link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="Cofrinhos">
+<meta name="format-detection" content="telephone=no">
+
+
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+<meta name="apple-mobile-web-app-title" content="Cofrinhos">
+
+<title>🐷 Cofrinhos</title>
+
+<style>
+
+/* =========================================================
+   BASE
+========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #FFF8EE;
+    color: #333;
+}
+
+.app {
+    width: 100%;
+    max-width: 540px;
+    margin: auto;
+    padding: 18px;
+}
+
+.oculto {
+    display: none !important;
+}
+
+
+/* =========================================================
+   CABEÇALHO
+========================================================= */
+
+header {
+    text-align: center;
+}
+
+header h1 {
+    font-size: 40px;
+    margin: 5px 0;
+}
+
+header p {
+    color: #777;
+    margin-top: 5px;
+}
+
+
+/* =========================================================
+   CARTÕES
+========================================================= */
+
+.card {
+    background: white;
+    border-radius: 20px;
+    padding: 18px;
+    margin: 15px 0;
+    box-shadow: 0 4px 12px rgba(0,0,0,.08);
+}
+
+
+/* =========================================================
+   CRIANÇAS
+========================================================= */
+
+.crianca-titulo {
+    color: #777;
+    font-size: 14px;
+    margin-bottom: 7px;
+}
+
+select,
+input,
+textarea {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    font-size: 17px;
+    margin: 6px 0 12px;
+    background: white;
+}
+
+textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+.gestao {
+    display: flex;
+    gap: 8px;
+}
+
+.gestao button {
+    flex: 1;
+    padding: 11px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.add {
+    background: #DCECF5;
+}
+
+.delete {
+    background: #F1D7D7;
+}
+
+
+/* =========================================================
+   PORQUINHO
+========================================================= */
+
+.piggy {
+    text-align: center;
+    font-size: 90px;
+    margin: 5px;
+}
+
+
+/* =========================================================
+   TOTAL
+========================================================= */
+
+.total {
+    text-align: center;
+}
+
+.total-label {
+    color: #777;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+.total-value {
+    font-size: 35px;
+    font-weight: bold;
+}
+
+
+/* =========================================================
+   COFRINHOS
+========================================================= */
+
+.cofres {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 13px;
+}
+
+.cofre {
+    background: white;
+    border-radius: 20px;
+    padding: 18px 10px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,.07);
+}
+
+.cofre-icon {
+    font-size: 40px;
+}
+
+.cofre-name {
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+.cofre-value {
+    font-size: 21px;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+
+/* =========================================================
+   BOTÕES
+========================================================= */
+
+.botoes {
+    margin-top: 20px;
+}
+
+.botao {
+    width: 100%;
+    border: none;
+    border-radius: 17px;
+    padding: 16px;
+    margin-bottom: 10px;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.semanada {
+    background: #333;
+    color: white;
+}
+
+.extra {
+    background: white;
+    border: 2px solid #333;
+}
+
+.gastar {
+    background: #F1D7D7;
+    color: #7A2222;
+}
+
+.transferir {
+    background: #DCECF5;
+    color: #24546B;
+}
+
+.sonho-btn {
+    background: #FFF0C9;
+    color: #6A4A00;
+}
+
+.historico-btn {
+    background: #E9E2F5;
+    color: #4E3970;
+}
+
+
+/* =========================================================
+   FORMULÁRIOS
+========================================================= */
+
+.formulario {
+    display: none;
+}
+
+.formulario h2 {
+    margin-top: 0;
+}
+
+.resultado {
+    background: #FFF8EE;
+    padding: 14px;
+    border-radius: 14px;
+    line-height: 1.8;
+    margin-bottom: 12px;
+}
+
+.confirmar {
+    width: 100%;
+    border: none;
+    border-radius: 14px;
+    padding: 15px;
+    background: #333;
+    color: white;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.cancelar {
+    width: 100%;
+    border: none;
+    background: transparent;
+    padding: 12px;
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   PERCENTAGENS
+========================================================= */
+
+.percentagens {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 7px;
+}
+
+.percentagens label {
+    font-size: 13px;
+    display: block;
+    text-align: center;
+}
+
+
+/* =========================================================
+   SONHOS
+========================================================= */
+
+.sonhos-area {
+    margin-top: 25px;
+}
+
+.sonhos-area h2 {
+    margin-bottom: 12px;
+}
+
+.sonho {
+    background: white;
+    border-radius: 18px;
+    padding: 17px;
+    margin-bottom: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,.07);
+}
+
+.sonho h3 {
+    margin: 0 0 7px;
+}
+
+.barra {
+    width: 100%;
+    height: 15px;
+    background: #eee;
+    border-radius: 20px;
+    overflow: hidden;
+    margin: 10px 0;
+}
+
+.barra-progresso {
+    height: 100%;
+    background: #F4C542;
+    width: 0%;
+    transition: width .5s ease;
+}
+
+.sonho-conquistado {
+    background: #FFF1A8;
+    border: 2px solid #F4C542;
+}
+
+.sonho-concretizado {
+    background: #E7F7E9;
+    border: 2px solid #72B77B;
+}
+
+.estado {
+    font-weight: bold;
+    margin-top: 8px;
+}
+
+.sonho-botoes {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.sonho-botoes button {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    background: #FFF0C9;
+    font-weight: bold;
+}
+
+
+/* =========================================================
+   HISTÓRICO
+========================================================= */
+
+.movimento {
+    background: white;
+    border-radius: 15px;
+    padding: 14px;
+    margin-bottom: 10px;
+    box-shadow: 0 3px 8px rgba(0,0,0,.06);
+}
+
+.entrada {
+    color: #28723A;
+}
+
+.saida-texto {
+    color: #8A2424;
+}
+
+.transferencia-texto {
+    color: #24546B;
+}
+
+.sonho-texto {
+    color: #6A4A00;
+}
+
+.sonho-concretizado-texto {
+    color: #198754;
+}
+
+.historico-ano {
+    margin-bottom: 12px;
+}
+
+.historico-ano > summary,
+.historico-mes > summary {
+    cursor: pointer;
+    font-weight: 700;
+    list-style: none;
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: #FFF8EE;
+}
+
+.historico-ano > summary::-webkit-details-marker,
+.historico-mes > summary::-webkit-details-marker {
+    display: none;
+}
+
+.historico-ano > summary::before,
+.historico-mes > summary::before {
+    content: '▶';
+    display: inline-block;
+    margin-right: 8px;
+    font-size: 0.8em;
+    transition: transform 0.15s ease;
+}
+
+.historico-ano[open] > summary::before,
+.historico-mes[open] > summary::before {
+    transform: rotate(90deg);
+}
+
+.historico-meses {
+    padding-left: 10px;
+}
+
+.historico-mes {
+    margin: 8px 0;
+}
+
+.historico-mes > summary {
+    background: #F5F0E8;
+}
+
+.historico-movimentos {
+    padding-top: 8px;
+}
+
+
+/* =========================================================
+   ADMINISTRAÇÃO
+========================================================= */
+
+.administracao {
+    margin-top: 25px;
+}
+
+.administracao summary {
+    cursor: pointer;
+    color: #777;
+    text-align: center;
+    padding: 10px;
+}
+
+.regra {
+    background: #FFF8EE;
+    padding: 13px;
+    border-radius: 12px;
+    line-height: 1.7;
+}
+
+
+/* =========================================================
+   SEM CRIANÇAS
+========================================================= */
+
+.sem-criancas {
+    background: white;
+    border-radius: 20px;
+    padding: 30px 20px;
+    text-align: center;
+    margin-top: 25px;
+    box-shadow: 0 4px 12px rgba(0,0,0,.08);
+}
+
+.sem-criancas .icone {
+    font-size: 70px;
+}
+
+.sem-criancas button {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 15px;
+    background: #333;
+    color: white;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+
+/* =========================================================
+   POPUP
+========================================================= */
+
+.popup-fundo {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.55);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.popup {
+    background: white;
+    border-radius: 25px;
+    padding: 30px 20px;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    animation: aparecer .4s ease;
+}
+
+.popup h2 {
+    font-size: 30px;
+}
+
+.popup-foguetes {
+    font-size: 45px;
+    margin: 10px;
+}
+
+.popup button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 14px;
+    background: #333;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+@keyframes aparecer {
+
+    from {
+        transform: scale(.7);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+}
+
+
+/* =========================================================
+   CONFETTIS
+========================================================= */
+
+.confetti {
+    position: fixed;
+    top: -20px;
+    font-size: 25px;
+    z-index: 2000;
+    animation: cair 2.5s linear forwards;
+}
+
+@keyframes cair {
+
+    to {
+        transform:
+            translateY(110vh)
+            rotate(720deg);
+
+        opacity: 0;
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVO
+========================================================= */
+
+@media (max-width: 420px) {
+
+    .app {
+        padding: 12px;
+    }
+
+    header h1 {
+        font-size: 34px;
+    }
+
+    .cofre {
+        padding: 15px 8px;
+    }
+
+    .cofre-icon {
+        font-size: 35px;
+    }
+
+    .cofre-value {
+        font-size: 19px;
+    }
+
+}
+
+</style>
+
+<style>
+/* =========================================================
+   FASE VISUAL 1 — DASHBOARD MÓVEL
+========================================================= */
+
+:root {
+    --cor-tinta: #26324a;
+    --cor-suave: #f7f3ff;
+    --cor-rosa: #ff6987;
+    --cor-roxo: #7657e8;
+    --cor-amarelo: #ffc94a;
+    --sombra-suave: 0 12px 30px rgba(70, 50, 120, .10);
+}
+
+body { background: radial-gradient(circle at 12% 0%, #ffe6ef 0, transparent 24%), radial-gradient(circle at 90% 12%, #e5dcff 0, transparent 28%), #f8f6fc; color: var(--cor-tinta); }
+.app { max-width: 600px; padding: 18px 16px 34px; }
+header { text-align: left; padding: 10px 6px 18px; }
+.marca { display: flex; align-items: center; gap: 12px; }
+.marca-porquinho { display: grid; place-items: center; width: 54px; height: 54px; border-radius: 19px; font-size: 32px; background: linear-gradient(145deg, #ff8ea4, #ff5e80); box-shadow: 0 10px 20px rgba(255, 91, 126, .25); }
+header h1 { margin: 0; font-size: 28px; letter-spacing: -.7px; color: var(--cor-tinta); }
+header p { margin: 3px 0 0; color: #75809a; font-size: 14px; font-weight: 600; }
+.card, .cofre, .sonho { border: 1px solid rgba(118, 87, 232, .07); box-shadow: var(--sombra-suave); }
+.perfil-crianca { padding: 14px; margin: 0 0 16px; border-radius: 22px; background: rgba(255, 255, 255, .88); }
+.crianca-titulo { color: #8c95aa; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
+select, input, textarea { border-color: #e5e1f1; color: var(--cor-tinta); }
+.gestao button { min-height: 42px; font-weight: 700; }
+.total { position: relative; overflow: hidden; padding: 25px 22px 24px; margin: 0 0 18px; text-align: left; color: white; background: linear-gradient(135deg, #6e54de 0%, #916cf1 52%, #b47cf7 100%); box-shadow: 0 18px 32px rgba(104, 77, 212, .28); }
+.total::after { content: ""; position: absolute; width: 190px; height: 190px; right: -74px; top: -86px; border-radius: 50%; background: rgba(255, 255, 255, .12); }
+.piggy { position: absolute; right: 14px; bottom: -11px; z-index: 1; margin: 0; font-size: 105px; line-height: 1; filter: drop-shadow(0 9px 7px rgba(43, 22, 104, .20)); animation: porquinho-flutuar 3.4s ease-in-out infinite; }
+.total-label, .total-value { position: relative; z-index: 2; }
+.total-label { color: rgba(255, 255, 255, .78); font-size: 13px; font-weight: 800; letter-spacing: .07em; }
+.total-value { margin-top: 5px; font-size: clamp(38px, 10vw, 53px); line-height: 1; letter-spacing: -2px; }
+.cofres { gap: 12px; }
+.cofre { min-height: 145px; padding: 17px 12px 15px; border-radius: 22px; text-align: left; background: rgba(255, 255, 255, .92); transition: transform .2s ease, box-shadow .2s ease; }
+.cofre:active { transform: scale(.98); box-shadow: 0 6px 16px rgba(70, 50, 120, .10); }
+.cofre:nth-child(1) { border-top: 4px solid #ffbd4a; } .cofre:nth-child(2) { border-top: 4px solid #a672ed; } .cofre:nth-child(3) { border-top: 4px solid #53b6a2; } .cofre:nth-child(4) { border-top: 4px solid #ff7791; }
+.cofre-icon { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 15px; font-size: 26px; background: #f6f3ff; }
+.cofre-name { margin-top: 12px; color: #667089; font-size: 14px; }.cofre-value { margin-top: 5px; font-size: 22px; letter-spacing: -.5px; color: var(--cor-tinta); }
+.sonhos-area { margin-top: 27px; }.sonhos-area h2 { margin: 0 0 12px; color: var(--cor-tinta); font-size: 21px; }.sonhos-area h2::before { content: "O teu objetivo"; display: block; margin-bottom: 4px; color: #8b94a9; font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.sonho { border-radius: 23px; background: rgba(255, 255, 255, .94); }.sonhos-area .sonho:first-child { padding: 20px; border: 1px solid rgba(166, 114, 237, .28); background: linear-gradient(145deg, #fff 0%, #faf7ff 100%); }.sonho h3 { color: var(--cor-tinta); font-size: 19px; }.barra { height: 12px; background: #e9e6f1; }.barra-progresso { background: linear-gradient(90deg, #ff9f54, #ffcf4f); }.estado { color: #6f598d; }.sonho-botoes button { min-height: 43px; border-radius: 13px; background: #fff0cd; color: #705018; }
+.botoes { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 28px; }.botao { min-height: 62px; margin: 0; border-radius: 19px; padding: 13px 12px; font-size: 15px; line-height: 1.2; box-shadow: 0 8px 16px rgba(51, 43, 93, .08); transition: transform .18s ease, box-shadow .18s ease; }.botao:active { transform: translateY(2px) scale(.98); box-shadow: none; }.acao-principal { min-height: 66px; }.semanada { grid-column: span 2; color: white; background: linear-gradient(135deg, #ff6382, #ff8f72); }.transferir { background: #e8f4ff; color: #21617e; }.gastar { background: #fff0f1; color: #a23c52; }.acao-secundaria { min-height: 52px; font-size: 13px; box-shadow: none; }.extra { background: white; border: 1px solid #e4dfef; }.sonho-btn { background: #fff7db; }.historico-btn { background: #f0ebff; }
+.formulario, .administracao { margin-top: 25px; }
+#areaPrincipal { display: flex; flex-direction: column; }
+.perfil-crianca { order: 1; }.total { order: 2; }.cofres { order: 3; }.sonhos-area { order: 4; }.botoes { order: 5; }.formulario { order: 6; }.administracao { order: 7; }
+.semanada { order: 1; }.transferir { order: 2; }.gastar { order: 3; }.extra { order: 4; }.sonho-btn { order: 5; }.historico-btn { order: 6; }
+@keyframes porquinho-flutuar { 0%, 100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-6px) rotate(2deg); } }
+@media (max-width: 380px) { .app { padding: 14px 12px 28px; } .total-value { font-size: 38px; } .piggy { right: 7px; font-size: 91px; } .cofre { min-height: 132px; } .cofre-value { font-size: 19px; } }
+</style>
+
+
+<style>
+/* =========================================================
+   BETA 1.0 — MOBILE / PWA
+   ========================================================= */
+html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+body {
+    overscroll-behavior-y: contain;
+}
+button, select, input, textarea {
+    -webkit-tap-highlight-color: transparent;
+}
+button {
+    touch-action: manipulation;
+}
+@media (max-width: 600px) {
+    body {
+        min-height: 100dvh;
+    }
+    .app {
+        padding-bottom: calc(34px + env(safe-area-inset-bottom));
+    }
+    .botao, .confirmar, .sem-criancas button {
+        min-height: 58px;
+    }
+    input, select, textarea {
+        font-size: 16px;
+    }
+}
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="app">
+
+
+<header>
+
+<div class="marca">
+    <div class="marca-porquinho" aria-hidden="true">🐷</div>
+    <div>
+        <h1>🐷 Cofrinhos</h1>
+        <p id="nomeCriancaCabecalho">O meu dinheiro, as minhas escolhas.</p>
+    </div>
+</div>
+
+</header>
+
+
+<!-- =======================================================
+     SEM CRIANÇAS
+======================================================= -->
+
+<div id="semCriancas"
+     class="sem-criancas">
+
+    <div class="icone">
+        🐷
+    </div>
+
+    <h2>
+        Bem-vindo aos Cofrinhos!
+    </h2>
+
+    <p>
+        Para começar, adiciona a primeira criança.
+    </p>
+
+    <button onclick="adicionarCrianca()">
+        ➕ Adicionar primeira criança
+    </button>
+
+    <input type="file"
+           id="ficheiroBackupInicio"
+           accept="application/json,.json"
+           style="display:none"
+           onchange="importarBackup(event)">
+
+    <button class="cancelar"
+            style="margin-top:12px; width:100%;"
+            onclick="document.getElementById('ficheiroBackupInicio').click()">
+        ♻️ Restaurar cópia de segurança
+    </button>
+
+</div>
+
+
+<!-- =======================================================
+     APLICAÇÃO
+======================================================= -->
+
+<div id="areaPrincipal"
+     class="oculto">
+
+
+<!-- =======================================================
+     CRIANÇA
+======================================================= -->
+
+<div class="card perfil-crianca">
+
+    <div class="crianca-titulo">
+        👨‍👩‍👧‍👦 Criança
+    </div>
+
+    <select id="criancaSelect"
+            onchange="mudarCrianca()">
+    </select>
+
+    <div class="gestao">
+
+        <button class="add"
+                onclick="adicionarCrianca()">
+            ➕ Adicionar criança
+        </button>
+
+        <button class="delete"
+                onclick="eliminarCrianca()">
+            🗑️ Eliminar
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =======================================================
+     TOTAL
+======================================================= -->
+
+<div class="card total">
+
+    <div class="piggy" aria-hidden="true">
+        🐷
+    </div>
+
+    <div class="total-label">
+        Total de <span id="nomeTotal"></span>
+    </div>
+
+    <div class="total-value"
+         id="total">
+        0,00 €
+    </div>
+
+</div>
+
+
+<!-- =======================================================
+     COFRINHOS
+======================================================= -->
+
+<div class="cofres">
+
+
+    <div class="cofre">
+
+        <div class="cofre-icon">
+            💰
+        </div>
+
+        <div class="cofre-name">
+            Carteira
+        </div>
+
+        <div class="cofre-value"
+             id="carteira">
+            0,00 €
+        </div>
+
+    </div>
+
+
+    <div class="cofre">
+
+        <div class="cofre-icon">
+            🌈
+        </div>
+
+        <div class="cofre-name">
+            Sonhos
+        </div>
+
+        <div class="cofre-value"
+             id="sonhos">
+            0,00 €
+        </div>
+
+    </div>
+
+
+    <div class="cofre">
+
+        <div class="cofre-icon">
+            📈
+        </div>
+
+        <div class="cofre-name">
+            Tesouro
+        </div>
+
+        <div class="cofre-value"
+             id="tesouro">
+            0,00 €
+        </div>
+
+    </div>
+
+
+    <div class="cofre">
+
+        <div class="cofre-icon">
+            🤝
+        </div>
+
+        <div class="cofre-name">
+            Partilha
+        </div>
+
+        <div class="cofre-value"
+             id="bonus">
+            0,00 €
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<!-- =======================================================
+     BOTÕES
+======================================================= -->
+
+<div class="botoes">
+
+    <button class="botao semanada acao-principal"
+             onclick="abrirEntrada('Semanada')">
+        ＋ Adicionar dinheiro
+    </button>
+
+    <button class="botao extra acao-secundaria"
+             onclick="abrirEntrada('Dinheiro Extra')">
+        🎁 Adicionar Dinheiro Extra
+    </button>
+
+    <button class="botao gastar acao-principal"
+             onclick="abrirSaida()">
+        💸 Gastar / Retirar
+    </button>
+
+    <button class="botao transferir acao-principal"
+             onclick="abrirTransferencia()">
+        ↔ Transferir
+    </button>
+
+    <button class="botao sonho-btn acao-secundaria"
+            onclick="abrirCriarSonho()">
+        🌈 Criar Sonho
+    </button>
+
+    <button class="botao historico-btn acao-secundaria"
+            onclick="abrirHistorico()">
+        📜 Ver Histórico
+    </button>
+
+</div>
+
+
+<!-- =======================================================
+     SONHOS
+======================================================= -->
+
+<div class="sonhos-area">
+
+    <h2>
+        🌈 Sonho em destaque
+    </h2>
+
+    <div id="listaSonhos"></div>
+
+</div>
+
+
+<!-- =======================================================
+     FORMULÁRIO DE ENTRADA
+======================================================= -->
+
+<div id="formEntrada"
+     class="card formulario">
+
+    <h2 id="tituloEntrada">
+        💰 Nova Semanada
+    </h2>
+
+    <label>
+        Valor
+    </label>
+
+    <input type="number"
+           id="valorEntrada"
+           min="0"
+           step="0.01"
+           oninput="calcularEntrada()">
+
+    <div id="resultadoEntrada"
+         class="resultado">
+    </div>
+
+    <h3>
+        Divisão dos Desejos
+    </h3>
+
+    <div class="percentagens">
+
+        <div>
+
+            <label>
+                🏆 Tesouro
+            </label>
+
+            <input type="number"
+                   id="pTesouro"
+                   value="30"
+                   oninput="calcularEntrada()">
+
+        </div>
+
+        <div>
+
+            <label>
+                🌈 Sonhos
+            </label>
+
+            <input type="number"
+                   id="pSonhos"
+                   value="50"
+                   oninput="calcularEntrada()">
+
+        </div>
+
+        <div>
+
+            <label>
+                🎁 Bónus
+            </label>
+
+            <input type="number"
+                   id="pBonus"
+                   value="20"
+                   oninput="calcularEntrada()">
+
+        </div>
+
+    </div>
+
+    <button class="confirmar"
+            onclick="confirmarEntrada()">
+        💾 Guardar
+    </button>
+
+    <button class="cancelar"
+            onclick="fecharFormularios()">
+        Cancelar
+    </button>
+
+</div>
+
+
+<!-- =======================================================
+     FORMULÁRIO DE SAÍDA
+======================================================= -->
+
+<div id="formSaida"
+     class="card formulario">
+
+    <h2>
+        💸 Gastar / Retirar dinheiro
+    </h2>
+
+    <label>
+        Cofrinho
+    </label>
+
+    <select id="cofreSaida"
+            onchange="atualizarCampoSonhoSaida()">
+
+        <option value="carteira">
+            👛 Carteira
+        </option>
+
+        <option value="sonhos">
+            🌈 Sonhos
+        </option>
+
+        <option value="tesouro">
+            🏆 Tesouro
+        </option>
+
+        <option value="bonus">
+            🎁 Bónus
+        </option>
+
+    </select>
+
+
+    <div id="escolhaSonhoSaida"
+         class="oculto">
+
+        <label>
+            🌈 Sonho
+        </label>
+
+        <select id="sonhoSaida">
+        </select>
+
+    </div>
+
+
+    <label>
+        Valor
+    </label>
+
+    <input type="number"
+           id="valorSaida"
+           min="0"
+           step="0.01">
+
+
+    <label>
+        Motivo
+    </label>
+
+    <textarea id="motivoSaida"
+              placeholder="Ex.: Comprei a bicicleta">
+    </textarea>
+
+
+    <button class="confirmar"
+            onclick="confirmarSaida()">
+        💸 Confirmar saída
+    </button>
+
+    <button class="cancelar"
+            onclick="fecharFormularios()">
+        Cancelar
+    </button>
+
+</div>
+
+
+<!-- =======================================================
+     TRANSFERÊNCIA
+======================================================= -->
+
+<div id="formTransferencia"
+     class="card formulario">
+
+    <h2>
+        🔄 Transferir entre Cofrinhos
+    </h2>
+
+
+    <label>
+        De
+    </label>
+
+    <select id="origem"
+            onchange="atualizarDestinos()">
+
+        <option value="carteira">
+            👛 Carteira
+        </option>
+
+        <option value="sonhos">
+            🌈 Sonhos
+        </option>
+
+        <option value="tesouro">
+            🏆 Tesouro
+        </option>
+
+        <option value="bonus">
+            🎁 Bónus
+        </option>
+
+    </select>
+
+
+    <label>
+        Para
+    </label>
+
+    <select id="destino">
+    </select>
+
+
+    <label>
+        Valor
+    </label>
+
+    <input type="number"
+           id="valorTransferencia"
+           min="0"
+           step="0.01">
+
+
+    <button class="confirmar"
+            onclick="confirmarTransferencia()">
+        🔄 Confirmar transferência
+    </button>
+
+    <button class="cancelar"
+            onclick="fecharFormularios()">
+        Cancelar
+    </button>
+
+</div>
+
+
+<!-- =======================================================
+     CRIAR SONHO
+======================================================= -->
+
+<div id="formSonho"
+     class="card formulario">
+
+    <h2>
+        🌈 Criar Sonho
+    </h2>
+
+
+    <label>
+        Nome do sonho
+    </label>
+
+    <input type="text"
+           id="nomeSonho"
+           placeholder="Ex.: Bicicleta">
+
+
+    <label>
+        Quanto precisas?
+    </label>
+
+    <input type="number"
+           id="valorSonho"
+           min="0"
+           step="0.01"
+           placeholder="Ex.: 300">
+
+
+    <button class="confirmar"
+            onclick="confirmarSonho()">
+        🌈 Criar este sonho
+    </button>
+
+    <button class="cancelar"
+            onclick="fecharFormularios()">
+        Cancelar
+    </button>
+
+</div>
+
+
+<!-- =======================================================
+     HISTÓRICO
+======================================================= -->
+
+<div id="historicoArea"
+     class="card formulario">
+
+    <h2>
+        📜 Histórico
+    </h2>
+
+    <div id="listaHistorico"></div>
+
+    <button class="cancelar"
+            onclick="fecharFormularios()">
+        Fechar histórico
+    </button>
+
+</div>
+
+
+<!-- =======================================================
+     ADMINISTRAÇÃO / REGRAS
+======================================================= -->
+
+<details class="administracao">
+
+    <summary>
+        ⚙️ Administração / Regras
+    </summary>
+
+
+    <div class="card">
+
+        <h3>💰 Periodicidade e valor</h3>
+
+        <label for="periodicidadeBase"><strong>Periodicidade</strong></label>
+        <select id="periodicidadeBase">
+            <option value="Semanada">Semanada (todas as semanas)</option>
+            <option value="Quinzenada">Quinzenada (de 15 em 15 dias)</option>
+            <option value="Mesada">Mesada (uma vez por mês)</option>
+        </select>
+
+        <label for="semanadaBase"><strong>Valor por pagamento</strong></label>
+        <input type="number" id="semanadaBase" min="0" step="0.01">
+
+        <p style="margin:4px 0 12px; line-height:1.5; color:#777;">
+            Os pais definem o novo valor quando alteram a periodicidade.
+            A alteração aplica-se apenas aos novos pagamentos e não altera o histórico.
+        </p>
+
+        <button class="confirmar" onclick="guardarSemanada()">
+            💾 Guardar alteração
+        </button>
+
+
+        <br><br>
+
+        <div class="regra" style="margin-top:18px;">
+
+            <strong>💾 Segurança dos dados</strong>
+
+            <p style="margin:8px 0 12px; line-height:1.5;">
+                Os dados ficam guardados neste dispositivo.
+                Faz uma cópia de segurança regularmente para não perder a evolução da família.
+            </p>
+
+            <button class="confirmar"
+                    onclick="exportarBackup()">
+                💾 Criar cópia de segurança
+            </button>
+
+            <input type="file"
+                   id="ficheiroBackup"
+                   accept="application/json,.json"
+                   style="display:none"
+                   onchange="importarBackup(event)">
+
+            <button class="cancelar"
+                    onclick="document.getElementById('ficheiroBackup').click()">
+                ♻️ Restaurar cópia de segurança
+            </button>
+
+        </div>
+
+
+        <div class="regra" style="margin-top:14px;">
+
+            <strong>
+                🔒 Privacidade, utilização e versão Beta
+            </strong>
+
+            <p style="margin:8px 0 10px; line-height:1.55;">
+                Os Cofrinhos foram concebidos para utilização familiar e para apoiar
+                a educação financeira das crianças.
+            </p>
+
+            <p style="margin:8px 0 10px; line-height:1.55;">
+                O nome e os dados introduzidos na aplicação destinam-se à utilização
+                da família e, nesta versão, ficam guardados localmente neste dispositivo.
+                Não são publicados nem divulgados pela aplicação.
+            </p>
+
+            <p style="margin:8px 0 10px; line-height:1.55;">
+                A aplicação não substitui a orientação dos pais nem constitui
+                aconselhamento financeiro, de investimento ou fiscal.
+            </p>
+
+            <p style="margin:8px 0 10px; line-height:1.55;">
+                <strong>Versão Beta:</strong> esta versão destina-se a testes e poderá
+                ainda sofrer alterações, melhorias ou correções.
+            </p>
+
+            <p style="margin:8px 0 0; line-height:1.55;">
+                🤝 <strong>Partilha:</strong> o Bónus representa a componente de partilha
+                dos Cofrinhos. A criança pode decidir utilizar esse dinheiro para ajudar
+                ou doar, de acordo com a finalidade que escolher com a família.
+            </p>
+
+        </div>
+
+
+        <div class="regra">
+
+            <strong>
+                Regras atuais
+            </strong>
+
+            <br><br>
+
+            👛 Carteira:
+            <strong>50%</strong>
+
+            <br>
+
+            🌈 Sonhos:
+            <strong>25%</strong>
+
+            <br>
+
+            🏆 Tesouro:
+            <strong>15%</strong>
+
+            <br>
+
+            🌈 Sonhos:
+            <strong>50%</strong>
+            dos Desejos
+
+            <br>
+
+            🎁 Bónus:
+            <strong>10%</strong>
+
+            <br><br>
+
+            🔒 Limite da Carteira:
+            <strong>
+                3 × metade do valor atual do pagamento
+            </strong>
+
+            <br>
+
+            🔄 Se a Carteira atingir o limite,
+            o valor que não couber é redistribuído
+            pelos outros Cofrinhos.
+
+            <br><br>
+
+            🔄 A Carteira pode receber transferências.
+
+            <br>
+
+            🔒 O Tesouro não transfere para outros Cofrinhos.
+            É reservado para Ações, ETF ou Bitcoin.
+
+        </div>
+
+    </div>
+
+</details>
+
+
+<!-- =======================================================
+     NOVA FAMÍLIA
+======================================================= -->
+
+<div style="
+    margin-top:25px;
+    text-align:center;
+">
+
+    <button onclick="novaFamilia()"
+            style="
+                border:none;
+                background:none;
+                color:#999;
+                cursor:pointer;
+            ">
+
+        🆕 Começar nova família
+
+    </button>
+
+</div>
+
+
+</div>
+
+
+<!-- =======================================================
+     POPUP
+======================================================= -->
+
+<div id="popup"
+     class="popup-fundo">
+
+    <div class="popup">
+
+        <div class="popup-foguetes">
+            🚀 🎊 🎉 🎊 🚀
+        </div>
+
+        <h2 id="popupTitulo">
+            🎉 PARABÉNS!
+        </h2>
+
+        <p id="popupTexto">
+        </p>
+
+        <div class="popup-foguetes">
+            ✨ 🎉 ✨ 🎉 ✨
+        </div>
+
+        <button onclick="fecharPopup()">
+            ❤️ Continuar
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   CONFIGURAÇÃO
+========================================================= */
+
+const STORAGE_KEY =
+    "cofrinhosFamilia_v4";
+
+
+let criancas = [];
+
+let criancaAtual = 0;
+
+let tipoEntrada = "Semanada";
+
+
+/* =========================================================
+   FUNÇÕES BÁSICAS
+========================================================= */
+
+function atual() {
+
+    return criancas[criancaAtual];
+
+}
+
+
+function euros(valor) {
+
+    return Number(valor || 0).toLocaleString(
+        "pt-PT",
+        {
+            style: "currency",
+            currency: "EUR"
+        }
+    );
+
+}
+
+
+function guardar() {
+
+    localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(criancas)
+    );
+
+}
+
+
+/* =========================================================
+   CÓPIA DE SEGURANÇA / RESTAURO
+========================================================= */
+
+function exportarBackup() {
+
+    try {
+
+        const backup = {
+            app: "Cofrinhos",
+            versao: 1,
+            data: new Date().toISOString(),
+            criancas: criancas
+        };
+
+        const conteudo = JSON.stringify(backup, null, 2);
+        const blob = new Blob([conteudo], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+
+        const data = new Date();
+        const nome =
+            `cofrinhos-backup-${data.getFullYear()}-${String(data.getMonth()+1).padStart(2,"0")}-${String(data.getDate()).padStart(2,"0")}.json`;
+
+        link.href = url;
+        link.download = nome;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(url);
+
+        alert("✅ Cópia de segurança criada com sucesso.");
+
+    } catch (erro) {
+
+        console.error(erro);
+        alert("❌ Não foi possível criar a cópia de segurança.");
+
+    }
+
+}
+
+
+function importarBackup(event) {
+
+    const ficheiro = event.target.files[0];
+
+    if (!ficheiro) return;
+
+    const leitor = new FileReader();
+
+    leitor.onload = function(e) {
+
+        try {
+
+            const backup = JSON.parse(e.target.result);
+            const dados = Array.isArray(backup) ? backup : backup.criancas;
+
+            if (!Array.isArray(dados)) {
+                throw new Error("Formato inválido");
+            }
+
+            const confirmar = confirm(
+                "⚠️ Restaurar esta cópia vai substituir os dados atuais desta família neste navegador.\n\n" +
+                "Queres continuar?"
+            );
+
+            if (!confirmar) {
+                event.target.value = "";
+                return;
+            }
+
+            criancas = dados;
+            criancaAtual = 0;
+            normalizarDados();
+            guardar();
+            fecharFormularios();
+            mostrarAplicacao();
+            atualizarTudo();
+
+            alert("✅ Cópia de segurança restaurada com sucesso.");
+
+        } catch (erro) {
+
+            console.error(erro);
+            alert("❌ Esta cópia de segurança não é válida.");
+
+        } finally {
+            event.target.value = "";
+        }
+
+    };
+
+    leitor.readAsText(ficheiro);
+
+}
+
+
+/* =========================================================
+   INICIAR
+========================================================= */
+
+function iniciar() {
+
+    const dados =
+        localStorage.getItem(
+            STORAGE_KEY
+        );
+
+
+    if (dados) {
+
+        try {
+
+            criancas =
+                JSON.parse(dados);
+
+            normalizarDados();
+
+        } catch {
+
+            criancas = [];
+
+        }
+
+    }
+
+
+    if (criancas.length > 0) {
+
+        mostrarAplicacao();
+
+    } else {
+
+        mostrarInicio();
+
+    }
+
+}
+
+
+function normalizarDados() {
+
+    criancas.forEach(c => {
+
+        c.carteira =
+            Number(c.carteira) || 0;
+
+        c.sonhos =
+            Number(c.sonhos) || 0;
+
+        c.tesouro =
+            Number(c.tesouro) || 0;
+
+        c.bonus =
+            Number(c.bonus) || 0;
+
+        c.semanadaBase =
+            Number(c.semanadaBase) || 12;
+
+        c.periodicidadeBase =
+            ["Semanada", "Quinzenada", "Mesada"].includes(c.periodicidadeBase)
+            ? c.periodicidadeBase
+            : "Semanada";
+
+        if (!Array.isArray(c.sonhosLista)) {
+            c.sonhosLista = [];
+        }
+
+        if (!Array.isArray(c.historico)) {
+            c.historico = [];
+        }
+
+        c.sonhosLista.forEach(s => {
+
+            s.objetivo =
+                Number(s.objetivo) || 0;
+
+            s.poupado =
+                Number(s.poupado) || 0;
+
+            s.conquistado =
+                Boolean(s.conquistado);
+
+            s.concretizado =
+                Boolean(s.concretizado);
+
+        });
+
+    });
+
+}
+
+
+function mostrarInicio() {
+
+    document
+        .getElementById("semCriancas")
+        .classList.remove("oculto");
+
+    document
+        .getElementById("areaPrincipal")
+        .classList.add("oculto");
+
+}
+
+
+function mostrarAplicacao() {
+
+    document
+        .getElementById("semCriancas")
+        .classList.add("oculto");
+
+    document
+        .getElementById("areaPrincipal")
+        .classList.remove("oculto");
+
+    atualizarListaCriancas();
+
+    atualizarTudo();
+
+}
+
+
+/* =========================================================
+   CRIANÇAS
+========================================================= */
+
+function adicionarCrianca() {
+
+    const nome =
+        prompt(
+            "Nome da criança:"
+        );
+
+
+    if (!nome || !nome.trim()) {
+        return;
+    }
+
+
+    const valor =
+        parseFloat(
+            prompt(
+                "Valor da semanada:",
+                "12"
+            )
+        );
+
+
+    if (
+        isNaN(valor) ||
+        valor <= 0
+    ) {
+
+        alert(
+            "Valor inválido."
+        );
+
+        return;
+
+    }
+
+
+    criancas.push({
+
+        nome: nome.trim(),
+
+        carteira: 0,
+
+        sonhos: 0,
+
+        tesouro: 0,
+
+        bonus: 0,
+
+        semanadaBase: valor,
+
+        periodicidadeBase: "Semanada",
+
+        sonhosLista: [],
+
+        historico: []
+
+    });
+
+
+    criancaAtual =
+        criancas.length - 1;
+
+
+    guardar();
+
+    mostrarAplicacao();
+
+}
+
+
+function atualizarListaCriancas() {
+
+    const select =
+        document.getElementById(
+            "criancaSelect"
+        );
+
+
+    select.innerHTML = "";
+
+
+    criancas.forEach(
+        (c, indice) => {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+            option.value =
+                indice;
+
+            option.textContent =
+                "👧 " + c.nome;
+
+            select.appendChild(
+                option
+            );
+
+        }
+    );
+
+
+    select.value =
+        criancaAtual;
+
+}
+
+
+function mudarCrianca() {
+
+    criancaAtual =
+        Number(
+            document
+                .getElementById(
+                    "criancaSelect"
+                )
+                .value
+        );
+
+
+    fecharFormularios();
+
+    atualizarTudo();
+
+}
+
+
+function eliminarCrianca() {
+
+    const c = atual();
+
+    if (!c) return;
+
+
+    const confirmar =
+        confirm(
+            "Eliminar " +
+            c.nome +
+            " e todos os seus dados?"
+        );
+
+
+    if (!confirmar) return;
+
+
+    criancas.splice(
+        criancaAtual,
+        1
+    );
+
+
+    if (
+        criancaAtual >=
+        criancas.length
+    ) {
+
+        criancaAtual =
+            criancas.length - 1;
+
+    }
+
+
+    guardar();
+
+
+    if (criancas.length === 0) {
+
+        mostrarInicio();
+
+        return;
+
+    }
+
+
+    atualizarListaCriancas();
+
+    atualizarTudo();
+
+}
+
+
+/* =========================================================
+   FORMULÁRIOS
+========================================================= */
+
+function fecharFormularios() {
+
+    document
+        .querySelectorAll(".formulario")
+        .forEach(
+            elemento => {
+                elemento.style.display =
+                    "none";
+            }
+        );
+
+}
+
+
+function abrirFormulario(id) {
+
+    fecharFormularios();
+
+
+    const formulario =
+        document.getElementById(id);
+
+
+    formulario.style.display =
+        "block";
+
+
+    formulario.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+    });
+
+
+    return formulario;
+
+}
+
+
+/* =========================================================
+   ENTRADAS
+========================================================= */
+
+function abrirEntrada(tipo) {
+
+    tipoEntrada = tipo;
+
+
+    const formulario =
+        abrirFormulario(
+            "formEntrada"
+        );
+
+
+    const campo =
+        document.getElementById(
+            "valorEntrada"
+        );
+
+
+    const periodicidade =
+        atual().periodicidadeBase || "Semanada";
+
+    document
+        .getElementById(
+            "tituloEntrada"
+        )
+        .innerText =
+            tipo === "Semanada"
+            ? "💰 Nova " + periodicidade
+            : "🎁 Dinheiro Extra";
+
+
+    campo.value =
+        tipo === "Semanada"
+        ? atual().semanadaBase
+        : "";
+
+
+    calcularEntrada();
+
+
+    setTimeout(
+        () => {
+
+            campo.focus();
+
+            campo.select();
+
+        },
+        400
+    );
+
+}
+
+
+function calcularEntrada() {
+
+    const valor =
+        parseFloat(
+            document
+                .getElementById(
+                    "valorEntrada"
+                )
+                .value
+        ) || 0;
+
+
+    const pTesouro =
+        parseFloat(
+            document
+                .getElementById(
+                    "pTesouro"
+                )
+                .value
+        ) || 0;
+
+
+    const pSonhos =
+        parseFloat(
+            document
+                .getElementById(
+                    "pSonhos"
+                )
+                .value
+        ) || 0;
+
+
+    const pBonus =
+        parseFloat(
+            document
+                .getElementById(
+                    "pBonus"
+                )
+                .value
+        ) || 0;
+
+
+    const totalPercentagens =
+        pTesouro +
+        pSonhos +
+        pBonus;
+
+
+    const resultado =
+        document.getElementById(
+            "resultadoEntrada"
+        );
+
+
+    if (
+        totalPercentagens !== 100
+    ) {
+
+        resultado.innerHTML =
+            "⚠️ Os Desejos têm de totalizar <strong>100%</strong>.";
+
+        return;
+
+    }
+
+
+    const c = atual();
+
+
+    /*
+    50% da entrada pertence à Carteira.
+    */
+
+    const parteCarteira =
+        valor * 0.50;
+
+
+    /*
+    Limite = 3 × metade da semanada atual.
+    */
+
+    const limiteCarteira =
+        c.semanadaBase *
+        0.50 *
+        3;
+
+
+    /*
+    Quanto ainda cabe na Carteira.
+    */
+
+    const espacoCarteira =
+        Math.max(
+            0,
+            limiteCarteira -
+            c.carteira
+        );
+
+
+    /*
+    O que realmente entra na Carteira.
+    */
+
+    const carteira =
+        Math.min(
+            parteCarteira,
+            espacoCarteira
+        );
+
+
+    /*
+    Excedente da Carteira vai para Sonhos.
+    */
+
+    const excedente =
+        parteCarteira -
+        carteira;
+
+
+    /*
+    Os outros 50% são os Desejos.
+    */
+
+    const desejos =
+        valor * 0.50;
+
+
+    const tesouro =
+        desejos *
+        pTesouro /
+        100;
+
+
+    const sonhos =
+        desejos *
+        pSonhos /
+        100 +
+        excedente;
+
+
+    const bonus =
+        desejos *
+        pBonus /
+        100;
+
+
+    resultado.innerHTML =
+
+        "👛 Carteira: <strong>" +
+        euros(carteira) +
+        "</strong><br>" +
+
+        "🏆 Tesouro: <strong>" +
+        euros(tesouro) +
+        "</strong><br>" +
+
+        "🌈 Sonhos: <strong>" +
+        euros(sonhos) +
+        "</strong><br>" +
+
+        "🎁 Bónus: <strong>" +
+        euros(bonus) +
+        "</strong>" +
+
+        (
+            excedente > 0
+            ?
+            "<br><br>🔄 " +
+            euros(excedente) +
+            " passaram automaticamente para Sonhos."
+            :
+            ""
+        );
+
+}
+
+
+function confirmarEntrada() {
+
+    const c = atual();
+
+
+    const valor =
+        parseFloat(
+            document
+                .getElementById(
+                    "valorEntrada"
+                )
+                .value
+        ) || 0;
+
+
+    const pTesouro =
+        parseFloat(
+            document
+                .getElementById(
+                    "pTesouro"
+                )
+                .value
+        ) || 0;
+
+
+    const pSonhos =
+        parseFloat(
+            document
+                .getElementById(
+                    "pSonhos"
+                )
+                .value
+        ) || 0;
+
+
+    const pBonus =
+        parseFloat(
+            document
+                .getElementById(
+                    "pBonus"
+                )
+                .value
+        ) || 0;
+
+
+    if (valor <= 0) {
+
+        alert(
+            "Introduza um valor válido."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        pTesouro +
+        pSonhos +
+        pBonus !==
+        100
+    ) {
+
+        alert(
+            "Os Desejos têm de totalizar 100%."
+        );
+
+        return;
+
+    }
+
+
+    const parteCarteira =
+        valor * 0.50;
+
+
+    const limiteCarteira =
+        c.semanadaBase *
+        0.50 *
+        3;
+
+
+    const espacoCarteira =
+        Math.max(
+            0,
+            limiteCarteira -
+            c.carteira
+        );
+
+
+    const carteira =
+        Math.min(
+            parteCarteira,
+            espacoCarteira
+        );
+
+
+    const excedente =
+        parteCarteira -
+        carteira;
+
+
+    const desejos =
+        valor * 0.50;
+
+
+    const tesouro =
+        desejos *
+        pTesouro /
+        100;
+
+
+    const sonhos =
+        desejos *
+        pSonhos /
+        100 +
+        excedente;
+
+
+    const bonus =
+        desejos *
+        pBonus /
+        100;
+
+
+    c.carteira += carteira;
+
+    c.tesouro += tesouro;
+
+    c.sonhos += sonhos;
+
+    c.bonus += bonus;
+
+
+    c.historico.push({
+
+        data:
+            dataAtual(),
+
+        tipo:
+            tipoEntrada === "Semanada"
+            ? (c.periodicidadeBase || "Semanada")
+            : tipoEntrada,
+
+        valor:
+            valor,
+
+        carteira:
+            carteira,
+
+        sonhos:
+            sonhos,
+
+        tesouro:
+            tesouro,
+
+        bonus:
+            bonus
+
+    });
+
+
+    /*
+    Se já existem sonhos,
+    o novo dinheiro disponível
+    em Sonhos é distribuído
+    automaticamente.
+    */
+
+    distribuirSonhosAutomaticamente();
+
+
+    guardar();
+
+    atualizarTudo();
+
+    fecharFormularios();
+
+}
+
+
+/* =========================================================
+   DISTRIBUIÇÃO AUTOMÁTICA PELOS SONHOS
+========================================================= */
+
+function distribuirSonhosAutomaticamente() {
+
+    const c = atual();
+
+
+    if (
+        c.sonhos <= 0
+    ) {
+        return;
+    }
+
+
+    for (
+        const sonho of c.sonhosLista
+    ) {
+
+        if (
+            c.sonhos <= 0
+        ) {
+            break;
+        }
+
+
+        if (
+            sonho.conquistado ||
+            sonho.concretizado
+        ) {
+            continue;
+        }
+
+
+        const falta =
+            Math.max(
+                0,
+                sonho.objetivo -
+                sonho.poupado
+            );
+
+
+        if (falta <= 0) {
+
+            marcarSonhoConquistado(
+                sonho
+            );
+
+            continue;
+
+        }
+
+
+        const valor =
+            Math.min(
+                c.sonhos,
+                falta
+            );
+
+
+        c.sonhos -= valor;
+
+        sonho.poupado += valor;
+
+
+        if (
+            sonho.poupado >=
+            sonho.objetivo
+        ) {
+
+            sonho.poupado =
+                sonho.objetivo;
+
+            marcarSonhoConquistado(
+                sonho
+            );
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   SAÍDAS
+========================================================= */
+
+function abrirSaida() {
+
+    const formulario =
+        abrirFormulario(
+            "formSaida"
+        );
+
+
+    atualizarCampoSonhoSaida();
+
+
+    setTimeout(
+        () => {
+
+            document
+                .getElementById(
+                    "valorSaida"
+                )
+                .focus();
+
+        },
+        400
+    );
+
+}
+
+
+function atualizarCampoSonhoSaida() {
+
+    const cofre =
+        document
+            .getElementById(
+                "cofreSaida"
+            )
+            .value;
+
+
+    const area =
+        document
+            .getElementById(
+                "escolhaSonhoSaida"
+            );
+
+
+    if (
+        cofre !== "sonhos"
+    ) {
+
+        area.classList.add(
+            "oculto"
+        );
+
+        return;
+
+    }
+
+
+    area.classList.remove(
+        "oculto"
+    );
+
+
+    const select =
+        document
+            .getElementById(
+                "sonhoSaida"
+            );
+
+
+    select.innerHTML = "";
+
+
+    const sonhosDisponiveis =
+        atual()
+            .sonhosLista
+            .filter(
+                sonho =>
+                    sonho.poupado > 0 &&
+                    !sonho.concretizado
+            );
+
+
+    if (
+        sonhosDisponiveis.length === 0
+    ) {
+
+        const option =
+            document.createElement(
+                "option"
+            );
+
+        option.textContent =
+            "Não existem sonhos com dinheiro";
+
+        option.value = "";
+
+        select.appendChild(
+            option
+        );
+
+        return;
+
+    }
+
+
+    sonhosDisponiveis.forEach(
+        sonho => {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+            option.value =
+                sonho.id;
+
+            option.textContent =
+                sonho.nome +
+                " — " +
+                euros(sonho.poupado);
+
+            select.appendChild(
+                option
+            );
+
+        }
+    );
+
+}
+
+
+function confirmarSaida() {
+
+    const c = atual();
+
+
+    const cofre =
+        document
+            .getElementById(
+                "cofreSaida"
+            )
+            .value;
+
+
+    const valor =
+        parseFloat(
+            document
+                .getElementById(
+                    "valorSaida"
+                )
+                .value
+        ) || 0;
+
+
+    const motivo =
+        document
+            .getElementById(
+                "motivoSaida"
+            )
+            .value
+            .trim();
+
+
+    if (valor <= 0) {
+
+        alert(
+            "Introduza um valor válido."
+        );
+
+        return;
+
+    }
+
+
+    /*
+    =====================================================
+    SAÍDA DE UM SONHO
+    =====================================================
+    */
+
+    if (
+        cofre === "sonhos"
+    ) {
+
+        const id =
+            Number(
+                document
+                    .getElementById(
+                        "sonhoSaida"
+                    )
+                    .value
+            );
+
+
+        const sonho =
+            c.sonhosLista.find(
+                s =>
+                    s.id === id
+            );
+
+
+        if (!sonho) {
+
+            alert(
+                "Escolha um sonho."
+            );
+
+            return;
+
+        }
+
+
+        if (
+            valor >
+            sonho.poupado
+        ) {
+
+            alert(
+                "O sonho só tem " +
+                euros(sonho.poupado) +
+                "."
+            );
+
+            return;
+
+        }
+
+
+        const valorSonhoAntesDaSaida = sonho.poupado;
+        const objetivoSonho = sonho.objetivo;
+        const percentagemFinal = objetivoSonho > 0
+            ? Math.min(100, Math.round((valorSonhoAntesDaSaida / objetivoSonho) * 100))
+            : 0;
+
+        sonho.poupado -= valor;
+
+
+        /*
+        Quando o dinheiro do sonho
+        sai completamente,
+        o sonho é arquivado no Histórico
+        e deixa de aparecer na página principal.
+        */
+
+        if (
+            sonho.poupado === 0
+        ) {
+
+            sonho.concretizado =
+                true;
+
+
+            sonho.conquistado =
+                false;
+
+
+            c.historico.push({
+
+                data:
+                    dataAtual(),
+
+                tipo:
+                    "Sonho Concretizado",
+
+                sonho:
+                    sonho.nome,
+
+                valor:
+                    valorSonhoAntesDaSaida,
+
+                objetivo:
+                    objetivoSonho,
+
+                percentagem:
+                    percentagemFinal,
+
+                motivo:
+                    motivo ||
+                    "Sonho concretizado"
+
+            });
+
+
+            guardar();
+
+            atualizarTudo();
+
+            fecharFormularios();
+
+            mostrarConfettis();
+
+            mostrarPopup(
+
+                "🎉 SONHO CONCRETIZADO!",
+
+                sonho.nome +
+                " foi concretizado!"
+
+            );
+
+            return;
+
+        }
+
+
+        /*
+        Saída parcial.
+        */
+
+        c.historico.push({
+
+            data:
+                dataAtual(),
+
+            tipo:
+                "Saída do Sonho",
+
+            sonho:
+                sonho.nome,
+
+            valor:
+                valor,
+
+            motivo:
+                motivo
+
+        });
+
+
+        guardar();
+
+        atualizarTudo();
+
+        fecharFormularios();
+
+        return;
+
+    }
+
+
+    /*
+    =====================================================
+    SAÍDA DOS COFRINHOS NORMAIS
+    =====================================================
+    */
+
+    if (
+        valor >
+        c[cofre]
+    ) {
+
+        alert(
+            "Saldo insuficiente."
+        );
+
+        return;
+
+    }
+
+
+    c[cofre] -= valor;
+
+
+    c.historico.push({
+
+        data:
+            dataAtual(),
+
+        tipo:
+            "Saída",
+
+        cofre:
+            cofre,
+
+        valor:
+            valor,
+
+        motivo:
+            motivo
+
+    });
+
+
+    guardar();
+
+    atualizarTudo();
+
+    fecharFormularios();
+
+}
+
+
+/* =========================================================
+   TRANSFERÊNCIAS
+========================================================= */
+
+function abrirTransferencia() {
+
+    const formulario =
+        abrirFormulario(
+            "formTransferencia"
+        );
+
+
+    atualizarDestinos();
+
+
+    setTimeout(
+        () => {
+
+            document
+                .getElementById(
+                    "valorTransferencia"
+                )
+                .focus();
+
+        },
+        400
+    );
+
+}
+
+
+function atualizarDestinos() {
+
+    const origem =
+        document
+            .getElementById("origem")
+            .value;
+
+    const destino =
+        document
+            .getElementById("destino");
+
+    destino.innerHTML = "";
+
+    const nomes = {
+        carteira: "👛 Carteira",
+        sonhos: "🌈 Sonhos",
+        tesouro: "🏆 Tesouro",
+        bonus: "🎁 Bónus"
+    };
+
+    /*
+       Regra: o Tesouro não pode transferir dinheiro
+       para outros Cofrinhos. O Tesouro fica reservado
+       para investimentos (Ações, ETF ou Bitcoin).
+    */
+    if (origem === "tesouro") {
+
+        const option = document.createElement("option");
+        option.value = "";
+        option.textContent = "📈 Apenas para investimentos (Ações / ETF / Bitcoin)";
+        option.disabled = true;
+        option.selected = true;
+        destino.appendChild(option);
+        return;
+    }
+
+    /*
+       Os restantes Cofrinhos podem transferir entre si,
+       incluindo para a Carteira.
+    */
+    Object.keys(nomes).forEach(cofre => {
+
+        if (cofre === origem) return;
+
+        const option = document.createElement("option");
+        option.value = cofre;
+        option.textContent = nomes[cofre];
+        destino.appendChild(option);
+    });
+}
+
+
+function confirmarTransferencia() {
+
+    const c = atual();
+
+
+    const origem =
+        document
+            .getElementById(
+                "origem"
+            )
+            .value;
+
+
+    const destino =
+        document
+            .getElementById(
+                "destino"
+            )
+            .value;
+
+
+    const valor =
+        parseFloat(
+            document
+                .getElementById(
+                    "valorTransferencia"
+                )
+                .value
+        ) || 0;
+
+
+    if (valor <= 0) {
+
+        alert(
+            "Introduza um valor válido."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        valor >
+        c[origem]
+    ) {
+
+        alert(
+            "Saldo insuficiente."
+        );
+
+        return;
+
+    }
+
+
+    /*
+       O Tesouro não pode sair para outros Cofrinhos.
+       A saída do Tesouro fica reservada para investimentos.
+    */
+    if (origem === "tesouro") {
+
+        alert(
+            "O Tesouro não pode ser transferido para outros Cofrinhos.\nO dinheiro do Tesouro é reservado para investimentos em Ações, ETF ou Bitcoin."
+        );
+
+        return;
+    }
+
+
+    c[origem] -= valor;
+
+    c[destino] += valor;
+
+
+    /*
+    Depois de transferir para Sonhos,
+    tenta automaticamente preencher
+    os sonhos existentes.
+    */
+
+    if (
+        destino === "sonhos"
+    ) {
+
+        distribuirSonhosAutomaticamente();
+
+    }
+
+
+    c.historico.push({
+
+        data:
+            dataAtual(),
+
+        tipo:
+            "Transferência",
+
+        origem:
+            origem,
+
+        destino:
+            destino,
+
+        valor:
+            valor
+
+    });
+
+
+    guardar();
+
+    atualizarTudo();
+
+    fecharFormularios();
+
+}
+
+
+/* =========================================================
+   SONHOS
+========================================================= */
+
+function abrirCriarSonho() {
+
+    const formulario =
+        abrirFormulario(
+            "formSonho"
+        );
+
+
+    setTimeout(
+        () => {
+
+            document
+                .getElementById(
+                    "nomeSonho"
+                )
+                .focus();
+
+        },
+        400
+    );
+
+}
+
+
+function confirmarSonho() {
+
+    const c = atual();
+
+
+    const nome =
+        document
+            .getElementById(
+                "nomeSonho"
+            )
+            .value
+            .trim();
+
+
+    const objetivo =
+        parseFloat(
+            document
+                .getElementById(
+                    "valorSonho"
+                )
+                .value
+        ) || 0;
+
+
+    if (!nome) {
+
+        alert(
+            "Dá um nome ao sonho."
+        );
+
+        return;
+
+    }
+
+
+    if (objetivo <= 0) {
+
+        alert(
+            "Indica o valor do sonho."
+        );
+
+        return;
+
+    }
+
+
+    const sonho = {
+
+        id:
+            Date.now(),
+
+        nome:
+            nome,
+
+        objetivo:
+            objetivo,
+
+        poupado:
+            0,
+
+        conquistado:
+            false,
+
+        concretizado:
+            false
+
+    };
+
+
+    c.sonhosLista.push(
+        sonho
+    );
+
+
+    /*
+    Se já houver dinheiro em Sonhos,
+    usa-o imediatamente.
+    */
+
+    distribuirSonhosAutomaticamente();
+
+
+    guardar();
+
+    atualizarTudo();
+
+    fecharFormularios();
+
+
+    document
+        .getElementById(
+            "nomeSonho"
+        )
+        .value = "";
+
+
+    document
+        .getElementById(
+            "valorSonho"
+        )
+        .value = "";
+
+
+    if (
+        sonho.conquistado
+    ) {
+
+        mostrarConfettis();
+
+        mostrarPopup(
+
+            "🎉 PARABÉNS!",
+
+            "Conquistaste o sonho " +
+            sonho.nome +
+            "!"
+
+        );
+
+    }
+
+}
+
+
+function marcarSonhoConquistado(
+    sonho
+) {
+
+    if (
+        sonho.conquistado
+    ) {
+        return;
+    }
+
+
+    sonho.conquistado =
+        true;
+
+}
+
+
+/* =========================================================
+   MOSTRAR SONHOS
+========================================================= */
+
+function mostrarSonhos() {
+
+    const c = atual();
+
+
+    const area =
+        document.getElementById(
+            "listaSonhos"
+        );
+
+
+    area.innerHTML = "";
+
+
+    if (
+        c.sonhosLista.length === 0
+    ) {
+
+        area.innerHTML =
+            "<p style='color:#777'>" +
+            "Ainda não tens nenhum sonho." +
+            "</p>";
+
+        return;
+
+    }
+
+
+    c.sonhosLista
+        .filter(sonho => !sonho.concretizado)
+        .forEach(
+        sonho => {
+
+            const percentagem =
+                Math.min(
+                    100,
+                    (
+                        sonho.poupado /
+                        sonho.objetivo
+                    ) * 100
+                );
+
+
+            const div =
+                document.createElement(
+                    "div"
+                );
+
+
+            div.className =
+                "sonho";
+
+
+            if (
+                sonho.conquistado
+            ) {
+
+                div.classList.add(
+                    "sonho-conquistado"
+                );
+
+            }
+
+
+            if (
+                sonho.concretizado
+            ) {
+
+                div.classList.add(
+                    "sonho-concretizado"
+                );
+
+            }
+
+
+            let estado;
+
+
+            if (
+                sonho.concretizado
+            ) {
+
+                estado =
+                    "🎉 Sonho concretizado";
+
+            }
+            else if (
+                sonho.conquistado
+            ) {
+
+                estado =
+                    "🏆 Conquistado";
+
+            }
+            else {
+
+                estado =
+                    "🌈 A caminho do sonho";
+
+            }
+
+
+            div.innerHTML =
+
+                "<h3>🌈 " +
+                sonho.nome +
+                "</h3>" +
+
+                "<strong>" +
+                euros(sonho.poupado) +
+                "</strong> / " +
+                euros(sonho.objetivo) +
+
+                "<div class='barra'>" +
+
+                    "<div class='barra-progresso' " +
+                    "style='width:" +
+                    percentagem +
+                    "%'>" +
+                    "</div>" +
+
+                "</div>" +
+
+                "<div>" +
+                Math.round(percentagem) +
+                "%" +
+                "</div>" +
+
+                "<div class='estado'>" +
+                estado +
+                "</div>";
+
+
+            /*
+            Só mostra o botão enquanto
+            o sonho ainda não foi conquistado.
+            */
+
+            if (
+                !sonho.conquistado &&
+                !sonho.concretizado
+            ) {
+
+                const botoes =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                botoes.className =
+                    "sonho-botoes";
+
+
+                const botao =
+                    document.createElement(
+                        "button"
+                    );
+
+
+                botao.innerText =
+                    "💰 Colocar dinheiro";
+
+
+                botao.onclick =
+                    () => adicionarAoSonho(
+                        sonho.id
+                    );
+
+
+                botoes.appendChild(
+                    botao
+                );
+
+
+                div.appendChild(
+                    botoes
+                );
+
+            }
+
+
+            area.appendChild(
+                div
+            );
+
+        }
+    );
+
+}
+
+
+/*
+Colocação manual de dinheiro
+num sonho.
+*/
+
+function adicionarAoSonho(id) {
+
+    const c = atual();
+
+
+    const sonho =
+        c.sonhosLista.find(
+            s =>
+                s.id === id
+        );
+
+
+    if (!sonho) return;
+
+
+    if (
+        sonho.conquistado ||
+        sonho.concretizado
+    ) {
+
+        alert(
+            "Este sonho já foi conquistado."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        c.sonhos <= 0
+    ) {
+
+        alert(
+            "Não tens dinheiro disponível no Cofrinho dos Sonhos."
+        );
+
+        return;
+
+    }
+
+
+    const falta =
+        sonho.objetivo -
+        sonho.poupado;
+
+
+    let valor =
+        parseFloat(
+            prompt(
+                "Quanto queres colocar?\n\n" +
+                "Disponível: " +
+                euros(c.sonhos) +
+                "\n" +
+                "Falta: " +
+                euros(falta)
+            )
+        );
+
+
+    if (
+        isNaN(valor) ||
+        valor <= 0
+    ) {
+        return;
+    }
+
+
+    if (
+        valor > c.sonhos
+    ) {
+
+        alert(
+            "Não tens esse valor disponível."
+        );
+
+        return;
+
+    }
+
+
+    valor =
+        Math.min(
+            valor,
+            falta
+        );
+
+
+    c.sonhos -= valor;
+
+    sonho.poupado += valor;
+
+
+    if (
+        sonho.poupado >=
+        sonho.objetivo
+    ) {
+
+        sonho.poupado =
+            sonho.objetivo;
+
+        marcarSonhoConquistado(
+            sonho
+        );
+
+        guardar();
+
+        atualizarTudo();
+
+        mostrarConfettis();
+
+        mostrarPopup(
+
+            "🎉 PARABÉNS!",
+
+            "Conquistaste o sonho " +
+            sonho.nome +
+            "!"
+
+        );
+
+        return;
+
+    }
+
+
+    guardar();
+
+    atualizarTudo();
+
+}
+
+
+/* =========================================================
+   HISTÓRICO
+========================================================= */
+
+function abrirHistorico() {
+
+    const formulario =
+        abrirFormulario(
+            "historicoArea"
+        );
+
+
+    mostrarHistorico();
+
+}
+
+
+function mostrarHistorico() {
+
+    const c = atual();
+
+    const area =
+        document.getElementById(
+            "listaHistorico"
+        );
+
+    area.innerHTML = "";
+
+    if (
+        !c.historico ||
+        c.historico.length === 0
+    ) {
+
+        area.innerHTML =
+            "<p>Não existem movimentos.</p>";
+
+        return;
+
+    }
+
+
+    /* =====================================================
+       ORGANIZAÇÃO: ANO → MÊS → MOVIMENTOS
+       O ano e o mês podem ser abertos/fechados.
+    ===================================================== */
+
+    const grupos = {};
+
+    c.historico.forEach(
+        movimento => {
+
+            const partes =
+                String(movimento.data || "")
+                    .split(",")[0]
+                    .split("/");
+
+            let dia = parseInt(partes[0], 10);
+            let mes = parseInt(partes[1], 10);
+            let ano = parseInt(partes[2], 10);
+
+            if (
+                !Number.isFinite(ano) ||
+                !Number.isFinite(mes)
+            ) {
+                const agora = new Date();
+                ano = agora.getFullYear();
+                mes = agora.getMonth() + 1;
+                dia = agora.getDate();
+            }
+
+            const chaveAno = String(ano);
+            const chaveMes = String(mes).padStart(2, "0");
+
+            if (!grupos[chaveAno]) {
+                grupos[chaveAno] = {};
+            }
+
+            if (!grupos[chaveAno][chaveMes]) {
+                grupos[chaveAno][chaveMes] = [];
+            }
+
+            grupos[chaveAno][chaveMes].push(movimento);
+        }
+    );
+
+
+    const nomesMeses = [
+        "Janeiro", "Fevereiro", "Março", "Abril",
+        "Maio", "Junho", "Julho", "Agosto",
+        "Setembro", "Outubro", "Novembro", "Dezembro"
+    ];
+
+
+    Object.keys(grupos)
+        .sort((a, b) => Number(b) - Number(a))
+        .forEach(
+            ano => {
+
+                const detalheAno =
+                    document.createElement("details");
+
+                detalheAno.className =
+                    "historico-ano";
+
+                /* Ano atual aberto por defeito. */
+                const anoAtual =
+                    new Date().getFullYear();
+
+                detalheAno.open =
+                    Number(ano) === anoAtual;
+
+                const resumoAno =
+                    document.createElement("summary");
+
+                resumoAno.textContent =
+                    "📅 " + ano;
+
+                detalheAno.appendChild(
+                    resumoAno
+                );
+
+
+                const areaMeses =
+                    document.createElement("div");
+
+                areaMeses.className =
+                    "historico-meses";
+
+
+                Object.keys(grupos[ano])
+                    .sort((a, b) => Number(b) - Number(a))
+                    .forEach(
+                        mes => {
+
+                            const detalheMes =
+                                document.createElement("details");
+
+                            detalheMes.className =
+                                "historico-mes";
+
+                            /* Apenas o mês atual abre por defeito. */
+                            detalheMes.open =
+                                Number(ano) === anoAtual &&
+                                Number(mes) ===
+                                    (new Date().getMonth() + 1);
+
+                            const resumoMes =
+                                document.createElement("summary");
+
+                            resumoMes.textContent =
+                                "🗓️ " +
+                                nomesMeses[Number(mes) - 1] +
+                                " (" +
+                                grupos[ano][mes].length +
+                                ")";
+
+                            detalheMes.appendChild(
+                                resumoMes
+                            );
+
+
+                            const areaMovimentos =
+                                document.createElement("div");
+
+                            areaMovimentos.className =
+                                "historico-movimentos";
+
+
+                            /* Mais recente primeiro dentro do mês. */
+                            grupos[ano][mes]
+                                .slice()
+                                .reverse()
+                                .forEach(
+                                    movimento => {
+
+                                        const div =
+                                            document.createElement(
+                                                "div"
+                                            );
+
+                                        div.className =
+                                            "movimento";
+
+
+                                        if (
+                                            movimento.tipo ===
+                                            "Sonho Concretizado"
+                                        ) {
+
+                                            div.innerHTML =
+
+                                                "📅 " +
+                                                movimento.data +
+
+                                                "<br><br>" +
+
+                                                "<strong class='sonho-concretizado-texto'>" +
+                                                "🎉 SONHO CONCRETIZADO" +
+                                                "</strong>" +
+
+                                                "<br><br>" +
+
+                                                "🌈 " +
+                                                movimento.sonho +
+
+                                                "<br>" +
+
+                                                euros(
+                                                    movimento.valor
+                                                ) +
+                                                " / " +
+                                                euros(
+                                                    movimento.objetivo ||
+                                                    movimento.valor
+                                                ) +
+
+                                                "<br>" +
+
+                                                (
+                                                    Number.isFinite(Number(movimento.percentagem))
+                                                        ? Number(movimento.percentagem) + "%"
+                                                        : "100%"
+                                                ) +
+
+                                                "<br>" +
+
+                                                (
+                                                    movimento.motivo ||
+                                                    "Sonho concretizado"
+                                                );
+
+                                        }
+
+                                        else if (
+                                            movimento.tipo ===
+                                            "Saída do Sonho"
+                                        ) {
+
+                                            div.innerHTML =
+
+                                                "📅 " +
+                                                movimento.data +
+
+                                                "<br><br>" +
+
+                                                "<strong class='sonho-texto'>" +
+                                                "🌈 Saída do Sonho" +
+                                                "</strong>" +
+
+                                                "<br>" +
+
+                                                movimento.sonho +
+
+                                                "<br>" +
+
+                                                euros(
+                                                    movimento.valor
+                                                ) +
+
+                                                "<br>" +
+
+                                                (
+                                                    movimento.motivo ||
+                                                    ""
+                                                );
+
+                                        }
+
+                                        else if (
+                                            movimento.tipo ===
+                                            "Saída"
+                                        ) {
+
+                                            div.innerHTML =
+
+                                                "📅 " +
+                                                movimento.data +
+
+                                                "<br><br>" +
+
+                                                "<strong class='saida-texto'>" +
+                                                "💸 Saída" +
+                                                "</strong>" +
+
+                                                "<br>" +
+
+                                                euros(
+                                                    movimento.valor
+                                                ) +
+
+                                                "<br>" +
+
+                                                (
+                                                    movimento.motivo ||
+                                                    ""
+                                                );
+
+                                        }
+
+                                        else if (
+                                            movimento.tipo ===
+                                            "Transferência"
+                                        ) {
+
+                                            div.innerHTML =
+
+                                                "📅 " +
+                                                movimento.data +
+
+                                                "<br><br>" +
+
+                                                "<strong class='transferencia-texto'>" +
+                                                "🔄 Transferência" +
+                                                "</strong>" +
+
+                                                "<br>" +
+
+                                                movimento.origem +
+                                                " → " +
+                                                movimento.destino +
+
+                                                "<br>" +
+
+                                                euros(
+                                                    movimento.valor
+                                                );
+
+                                        }
+
+                                        else {
+
+                                            div.innerHTML =
+
+                                                "📅 " +
+                                                movimento.data +
+
+                                                "<br><br>" +
+
+                                                "<strong class='entrada'>" +
+
+                                                "💰 " +
+                                                movimento.tipo +
+
+                                                "</strong>" +
+
+                                                "<br>" +
+
+                                                "Valor: " +
+
+                                                euros(
+                                                    movimento.valor
+                                                );
+
+                                        }
+
+
+                                        areaMovimentos.appendChild(
+                                            div
+                                        );
+
+                                    }
+                                );
+
+
+                            detalheMes.appendChild(
+                                areaMovimentos
+                            );
+
+                            areaMeses.appendChild(
+                                detalheMes
+                            );
+
+                        }
+                    );
+
+
+                detalheAno.appendChild(
+                    areaMeses
+                );
+
+                area.appendChild(
+                    detalheAno
+                );
+
+            }
+        );
+
+}
+
+
+/* =========================================================
+   SEMANADA BASE
+========================================================= */
+
+function guardarSemanada() {
+
+    const valor = parseFloat(
+        document.getElementById("semanadaBase").value
+    );
+
+    const periodicidade =
+        document.getElementById("periodicidadeBase").value;
+
+    if (isNaN(valor) || valor <= 0) {
+        alert("Indica um valor válido.");
+        return;
+    }
+
+    if (!["Semanada", "Quinzenada", "Mesada"].includes(periodicidade)) {
+        alert("Escolhe uma periodicidade válida.");
+        return;
+    }
+
+    atual().semanadaBase = valor;
+    atual().periodicidadeBase = periodicidade;
+
+    guardar();
+    atualizarTudo();
+
+    alert(
+        "Nova regra guardada: " + periodicidade + " de " + euros(valor) +
+        ".\n\nA alteração aplica-se apenas aos novos pagamentos."
+    );
+
+}
+
+
+/* =========================================================
+   POPUP
+========================================================= */
+
+function mostrarPopup(
+    titulo,
+    texto
+) {
+
+    document
+        .getElementById(
+            "popupTitulo"
+        )
+        .innerText =
+            titulo;
+
+
+    document
+        .getElementById(
+            "popupTexto"
+        )
+        .innerText =
+            texto;
+
+
+    document
+        .getElementById(
+            "popup"
+        )
+        .style.display =
+            "flex";
+
+}
+
+
+function fecharPopup() {
+
+    document
+        .getElementById(
+            "popup"
+        )
+        .style.display =
+            "none";
+
+}
+
+
+/* =========================================================
+   CONFETTIS
+========================================================= */
+
+function mostrarConfettis() {
+
+    const simbolos = [
+        "🎉",
+        "🎊",
+        "✨",
+        "🚀",
+        "⭐",
+        "🎈"
+    ];
+
+
+    for (
+        let i = 0;
+        i < 35;
+        i++
+    ) {
+
+        const confetti =
+            document.createElement(
+                "div"
+            );
+
+
+        confetti.className =
+            "confetti";
+
+
+        confetti.innerText =
+            simbolos[
+                Math.floor(
+                    Math.random() *
+                    simbolos.length
+                )
+            ];
+
+
+        confetti.style.left =
+            Math.random() *
+            100 +
+            "%";
+
+
+        confetti.style.animationDelay =
+            Math.random() *
+            1.5 +
+            "s";
+
+
+        document.body.appendChild(
+            confetti
+        );
+
+
+        setTimeout(
+            () => {
+                confetti.remove();
+            },
+            4000
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   DATA
+========================================================= */
+
+function dataAtual() {
+
+    return new Date()
+        .toLocaleString(
+            "pt-PT"
+        );
+
+}
+
+
+/* =========================================================
+   ATUALIZAR ECRÃ
+========================================================= */
+
+function atualizarTudo() {
+
+    const c = atual();
+
+    if (!c) return;
+
+
+    document
+        .getElementById(
+            "nomeTotal"
+        )
+        .innerText =
+            c.nome;
+
+
+    const nomeCriancaCabecalho =
+        document.getElementById(
+            "nomeCriancaCabecalho"
+        );
+
+    if (nomeCriancaCabecalho) {
+        nomeCriancaCabecalho.innerText =
+            "👋 Olá, " + c.nome;
+    }
+
+
+    document
+        .getElementById(
+            "carteira"
+        )
+        .innerText =
+            euros(
+                c.carteira
+            );
+
+
+    const dinheiroNosSonhosAtivos =
+        c.sonhosLista
+            .filter(sonho => !sonho.concretizado)
+            .reduce(
+                (total, sonho) => total + sonho.poupado,
+                0
+            );
+
+
+    document
+        .getElementById(
+            "sonhos"
+        )
+        .innerText =
+            euros(
+                c.sonhos +
+                dinheiroNosSonhosAtivos
+            );
+
+
+    document
+        .getElementById(
+            "tesouro"
+        )
+        .innerText =
+            euros(
+                c.tesouro
+            );
+
+
+    document
+        .getElementById(
+            "bonus"
+        )
+        .innerText =
+            euros(
+                c.bonus
+            );
+
+
+    /*
+    O dinheiro que está dentro
+    de cada sonho continua a
+    pertencer à criança.
+    */
+
+    const dinheiroNosSonhos =
+        c.sonhosLista.reduce(
+            (
+                total,
+                sonho
+            ) => {
+
+                return total +
+                    sonho.poupado;
+
+            },
+            0
+        );
+
+
+    const total =
+
+        c.carteira +
+
+        c.sonhos +
+
+        dinheiroNosSonhos +
+
+        c.tesouro +
+
+        c.bonus;
+
+
+    document
+        .getElementById(
+            "total"
+        )
+        .innerText =
+            euros(total);
+
+
+    document
+        .getElementById(
+            "semanadaBase"
+        )
+        .value =
+            c.semanadaBase;
+
+    const campoPeriodicidade =
+        document.getElementById("periodicidadeBase");
+    if (campoPeriodicidade) {
+        campoPeriodicidade.value =
+            c.periodicidadeBase || "Semanada";
+    }
+
+    const botaoPagamento =
+        document.querySelector("button.semanada");
+    if (botaoPagamento) {
+        botaoPagamento.innerText =
+            "＋ Adicionar dinheiro";
+    }
+
+
+    mostrarSonhos();
+
+    atualizarCampoSonhoSaida();
+
+}
+
+
+/* =========================================================
+   NOVA FAMÍLIA
+========================================================= */
+
+function novaFamilia() {
+
+    const confirmar =
+        confirm(
+
+            "⚠️ Isto vai apagar todos os dados " +
+            "desta família neste navegador.\n\n" +
+            "Queres continuar?"
+
+        );
+
+
+    if (!confirmar) return;
+
+
+    localStorage.removeItem(
+        STORAGE_KEY
+    );
+
+
+    criancas = [];
+
+    criancaAtual = 0;
+
+
+    fecharFormularios();
+
+    mostrarInicio();
+
+}
+
+
+/* =========================================================
+   ARRANQUE
+========================================================= */
+
+iniciar();
+
+
+/* =========================================================
+   PWA
+========================================================= */
+
+if (
+    "serviceWorker" in navigator &&
+    window.isSecureContext
+) {
+
+    window.addEventListener(
+        "load",
+        () => {
+            navigator
+                .serviceWorker
+                .register("./sw.js")
+                .catch(erro => console.error("Não foi possível registar o service worker.", erro));
+        }
+    );
+
+}
+
+</script>
+
+
+
+<script>
+if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./sw.js").catch(err => {
+            console.warn("Cofrinhos: service worker não registado.", err);
+        });
+    });
+}
+</script>
+
+</body>
+
+</html>
