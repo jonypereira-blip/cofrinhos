@@ -903,7 +903,7 @@ button {
         </div>
 
         <div class="cofre-name">
-            Partilha
+            Bónus / Partilha
         </div>
 
         <div class="cofre-value"
@@ -1031,7 +1031,7 @@ button {
         <div>
 
             <label>
-                🎁 Bónus
+                🎁 Bónus / Partilha
             </label>
 
             <input type="number"
@@ -1087,7 +1087,7 @@ button {
         </option>
 
         <option value="bonus">
-            🎁 Bónus
+            🎁 Bónus / Partilha
         </option>
 
     </select>
@@ -1170,7 +1170,7 @@ button {
         </option>
 
         <option value="bonus">
-            🎁 Bónus
+            🎁 Bónus / Partilha
         </option>
 
     </select>
@@ -1366,7 +1366,7 @@ button {
             </p>
 
             <p style="margin:8px 0 0; line-height:1.55;">
-                🤝 <strong>Partilha:</strong> o Bónus representa a componente de partilha
+                🤝 <strong>Bónus / Partilha:</strong> o Bónus representa a componente de partilha
                 dos Cofrinhos. A criança pode decidir utilizar esse dinheiro para ajudar
                 ou doar, de acordo com a finalidade que escolher com a família.
             </p>
@@ -1403,7 +1403,7 @@ button {
 
             <br>
 
-            🎁 Bónus:
+            🎁 Bónus / Partilha:
             <strong>10%</strong>
 
             <br><br>
@@ -2215,7 +2215,7 @@ function calcularEntrada() {
         euros(sonhos) +
         "</strong><br>" +
 
-        "🎁 Bónus: <strong>" +
+        "🎁 Bónus / Partilha: <strong>" +
         euros(bonus) +
         "</strong>" +
 
@@ -2942,7 +2942,7 @@ function atualizarDestinos() {
         carteira: "👛 Carteira",
         sonhos: "🌈 Sonhos",
         tesouro: "🏆 Tesouro",
-        bonus: "🎁 Bónus"
+        bonus: "🎁 Bónus / Partilha"
     };
 
     /*
@@ -4295,8 +4295,14 @@ function atualizarTudo() {
     const botaoPagamento =
         document.querySelector("button.semanada");
     if (botaoPagamento) {
+        const periodicidade = c.periodicidadeBase || "Semanada";
+        const nomesBotao = {
+            Semanada: "Semanada",
+            Quinzenada: "Quinzenada",
+            Mesada: "Mesada"
+        };
         botaoPagamento.innerText =
-            "＋ Adicionar dinheiro";
+            "＋ Adicionar " + (nomesBotao[periodicidade] || "Semanada");
     }
 
 
