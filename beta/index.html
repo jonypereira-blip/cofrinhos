@@ -1,11 +1,4 @@
 <!DOCTYPE html>
-<!--
-© 2026 João Pereira — Cofrinhos
-Todos os direitos reservados.
-
-Aplicação, código, conteúdos, textos, estrutura e elementos gráficos
-desenvolvidos para os Cofrinhos.
--->
 <html lang="pt-PT">
 
 <head>
@@ -910,11 +903,13 @@ button {
         </div>
 
         <div class="cofre-name">
-            Bónus / Partilha
+            Partilha
         </div>
 
         <div class="cofre-value"
-             id="bonus">Bónus / Partilha</div>
+             id="bonus">
+            0,00 €
+        </div>
 
     </div>
 
@@ -988,7 +983,7 @@ button {
     </h2>
 
     <label>
-        Valor
+        Valor a distribuir
     </label>
 
     <input type="number"
@@ -1002,48 +997,33 @@ button {
     </div>
 
     <h3>
-        Divisão dos Desejos
+        Como queres dividir o dinheiro?
     </h3>
+
+    <p style="margin:4px 0 12px; line-height:1.5; color:#777;">
+        Introduz o valor em euros em cada Cofrinho. A percentagem é calculada automaticamente.
+    </p>
 
     <div class="percentagens">
 
         <div>
-
-            <label>
-                🏆 Tesouro
-            </label>
-
-            <input type="number"
-                   id="pTesouro"
-                   value="30"
-                   oninput="calcularEntrada()">
-
+            <label>👛 Carteira (€)</label>
+            <input type="number" id="vCarteira" min="0" step="0.01" value="0" oninput="calcularEntrada()">
         </div>
 
         <div>
-
-            <label>
-                🌈 Sonhos
-            </label>
-
-            <input type="number"
-                   id="pSonhos"
-                   value="50"
-                   oninput="calcularEntrada()">
-
+            <label>🏆 Tesouro (€)</label>
+            <input type="number" id="vTesouro" min="0" step="0.01" value="0" oninput="calcularEntrada()">
         </div>
 
         <div>
+            <label>🌈 Sonhos (€)</label>
+            <input type="number" id="vSonhos" min="0" step="0.01" value="0" oninput="calcularEntrada()">
+        </div>
 
-            <label>
-                🎁 Bónus / Partilha
-            </label>
-
-            <input type="number"
-                   id="pBonus"
-                   value="20"
-                   oninput="calcularEntrada()">
-
+        <div>
+            <label>🎁 Bónus (€)</label>
+            <input type="number" id="vBonus" min="0" step="0.01" value="0" oninput="calcularEntrada()">
         </div>
 
     </div>
@@ -1092,7 +1072,7 @@ button {
         </option>
 
         <option value="bonus">
-            🎁 Bónus / Partilha
+            🎁 Bónus
         </option>
 
     </select>
@@ -1175,7 +1155,7 @@ button {
         </option>
 
         <option value="bonus">
-            🎁 Bónus / Partilha
+            🎁 Bónus
         </option>
 
     </select>
@@ -1371,7 +1351,7 @@ button {
             </p>
 
             <p style="margin:8px 0 0; line-height:1.55;">
-                🤝 <strong>Bónus / Partilha:</strong> o Bónus representa a componente de partilha
+                🤝 <strong>Partilha:</strong> o Bónus representa a componente de partilha
                 dos Cofrinhos. A criança pode decidir utilizar esse dinheiro para ajudar
                 ou doar, de acordo com a finalidade que escolher com a família.
             </p>
@@ -1408,7 +1388,7 @@ button {
 
             <br>
 
-            🎁 Bónus / Partilha:
+            🎁 Bónus:
             <strong>10%</strong>
 
             <br><br>
@@ -2060,361 +2040,90 @@ function abrirEntrada(tipo) {
 }
 
 
+function obterDistribuicaoEntrada() {
+
+    const valor = parseFloat(document.getElementById("valorEntrada").value) || 0;
+
+    const carteira = Math.max(0, parseFloat(document.getElementById("vCarteira").value) || 0);
+    const tesouro = Math.max(0, parseFloat(document.getElementById("vTesouro").value) || 0);
+    const sonhos = Math.max(0, parseFloat(document.getElementById("vSonhos").value) || 0);
+    const bonus = Math.max(0, parseFloat(document.getElementById("vBonus").value) || 0);
+
+    return { valor, carteira, tesouro, sonhos, bonus, total: carteira + tesouro + sonhos + bonus };
+}
+
+
 function calcularEntrada() {
 
-    const valor =
-        parseFloat(
-            document
-                .getElementById(
-                    "valorEntrada"
-                )
-                .value
-        ) || 0;
+    const d = obterDistribuicaoEntrada();
+    const resultado = document.getElementById("resultadoEntrada");
 
+    if (!resultado) return;
 
-    const pTesouro =
-        parseFloat(
-            document
-                .getElementById(
-                    "pTesouro"
-                )
-                .value
-        ) || 0;
-
-
-    const pSonhos =
-        parseFloat(
-            document
-                .getElementById(
-                    "pSonhos"
-                )
-                .value
-        ) || 0;
-
-
-    const pBonus =
-        parseFloat(
-            document
-                .getElementById(
-                    "pBonus"
-                )
-                .value
-        ) || 0;
-
-
-    const totalPercentagens =
-        pTesouro +
-        pSonhos +
-        pBonus;
-
-
-    const resultado =
-        document.getElementById(
-            "resultadoEntrada"
-        );
-
-
-    if (
-        totalPercentagens !== 100
-    ) {
-
-        resultado.innerHTML =
-            "⚠️ Os Desejos têm de totalizar <strong>100%</strong>.";
-
+    if (d.valor <= 0) {
+        resultado.innerHTML = "💡 Introduz o valor que vais receber e divide-o pelos Cofrinhos.";
         return;
-
     }
 
+    const diferenca = Math.round((d.total - d.valor) * 100) / 100;
 
-    const c = atual();
+    if (Math.abs(diferenca) > 0.009) {
+        resultado.innerHTML =
+            "⚠️ A distribuição deve totalizar <strong>" + euros(d.valor) + "</strong>. " +
+            "Neste momento tens <strong>" + euros(d.total) + "</strong>.";
+        return;
+    }
 
-
-    /*
-    50% da entrada pertence à Carteira.
-    */
-
-    const parteCarteira =
-        valor * 0.50;
-
-
-    /*
-    Limite = 3 × metade da semanada atual.
-    */
-
-    const limiteCarteira =
-        c.semanadaBase *
-        0.50 *
-        3;
-
-
-    /*
-    Quanto ainda cabe na Carteira.
-    */
-
-    const espacoCarteira =
-        Math.max(
-            0,
-            limiteCarteira -
-            c.carteira
-        );
-
-
-    /*
-    O que realmente entra na Carteira.
-    */
-
-    const carteira =
-        Math.min(
-            parteCarteira,
-            espacoCarteira
-        );
-
-
-    /*
-    Excedente da Carteira vai para Sonhos.
-    */
-
-    const excedente =
-        parteCarteira -
-        carteira;
-
-
-    /*
-    Os outros 50% são os Desejos.
-    */
-
-    const desejos =
-        valor * 0.50;
-
-
-    const tesouro =
-        desejos *
-        pTesouro /
-        100;
-
-
-    const sonhos =
-        desejos *
-        pSonhos /
-        100 +
-        excedente;
-
-
-    const bonus =
-        desejos *
-        pBonus /
-        100;
-
+    const percent = (v) => d.valor > 0 ? ((v / d.valor) * 100).toFixed(1).replace(".0", "") : "0";
 
     resultado.innerHTML =
-
-        "👛 Carteira: <strong>" +
-        euros(carteira) +
-        "</strong><br>" +
-
-        "🏆 Tesouro: <strong>" +
-        euros(tesouro) +
-        "</strong><br>" +
-
-        "🌈 Sonhos: <strong>" +
-        euros(sonhos) +
-        "</strong><br>" +
-
-        "🎁 Bónus / Partilha: <strong>" +
-        euros(bonus) +
-        "</strong>" +
-
-        (
-            excedente > 0
-            ?
-            "<br><br>🔄 " +
-            euros(excedente) +
-            " passaram automaticamente para Sonhos."
-            :
-            ""
-        );
-
+        "👛 Carteira: <strong>" + euros(d.carteira) + "</strong> (" + percent(d.carteira) + "%)<br>" +
+        "🏆 Tesouro: <strong>" + euros(d.tesouro) + "</strong> (" + percent(d.tesouro) + "%)<br>" +
+        "🌈 Sonhos: <strong>" + euros(d.sonhos) + "</strong> (" + percent(d.sonhos) + "%)<br>" +
+        "🎁 Bónus: <strong>" + euros(d.bonus) + "</strong> (" + percent(d.bonus) + "%)<br><br>" +
+        "✅ Total: <strong>" + euros(d.total) + "</strong>";
 }
 
 
 function confirmarEntrada() {
 
     const c = atual();
+    const d = obterDistribuicaoEntrada();
 
-
-    const valor =
-        parseFloat(
-            document
-                .getElementById(
-                    "valorEntrada"
-                )
-                .value
-        ) || 0;
-
-
-    const pTesouro =
-        parseFloat(
-            document
-                .getElementById(
-                    "pTesouro"
-                )
-                .value
-        ) || 0;
-
-
-    const pSonhos =
-        parseFloat(
-            document
-                .getElementById(
-                    "pSonhos"
-                )
-                .value
-        ) || 0;
-
-
-    const pBonus =
-        parseFloat(
-            document
-                .getElementById(
-                    "pBonus"
-                )
-                .value
-        ) || 0;
-
-
-    if (valor <= 0) {
-
-        alert(
-            "Introduza um valor válido."
-        );
-
+    if (d.valor <= 0) {
+        alert("Introduza um valor válido.");
         return;
-
     }
 
-
-    if (
-        pTesouro +
-        pSonhos +
-        pBonus !==
-        100
-    ) {
-
-        alert(
-            "Os Desejos têm de totalizar 100%."
-        );
-
+    if (d.carteira < 0 || d.tesouro < 0 || d.sonhos < 0 || d.bonus < 0) {
+        alert("Os valores não podem ser negativos.");
         return;
-
     }
 
+    if (Math.abs(d.total - d.valor) > 0.009) {
+        alert("A distribuição pelos Cofrinhos tem de totalizar exatamente " + euros(d.valor) + ".");
+        return;
+    }
 
-    const parteCarteira =
-        valor * 0.50;
-
-
-    const limiteCarteira =
-        c.semanadaBase *
-        0.50 *
-        3;
-
-
-    const espacoCarteira =
-        Math.max(
-            0,
-            limiteCarteira -
-            c.carteira
-        );
-
-
-    const carteira =
-        Math.min(
-            parteCarteira,
-            espacoCarteira
-        );
-
-
-    const excedente =
-        parteCarteira -
-        carteira;
-
-
-    const desejos =
-        valor * 0.50;
-
-
-    const tesouro =
-        desejos *
-        pTesouro /
-        100;
-
-
-    const sonhos =
-        desejos *
-        pSonhos /
-        100 +
-        excedente;
-
-
-    const bonus =
-        desejos *
-        pBonus /
-        100;
-
-
-    c.carteira += carteira;
-
-    c.tesouro += tesouro;
-
-    c.sonhos += sonhos;
-
-    c.bonus += bonus;
-
+    c.carteira += d.carteira;
+    c.tesouro += d.tesouro;
+    c.sonhos += d.sonhos;
+    c.bonus += d.bonus;
 
     c.historico.push({
-
-        data:
-            dataAtual(),
-
-        tipo:
-            tipoEntrada === "Semanada"
-            ? (c.periodicidadeBase || "Semanada")
-            : tipoEntrada,
-
-        valor:
-            valor,
-
-        carteira:
-            carteira,
-
-        sonhos:
-            sonhos,
-
-        tesouro:
-            tesouro,
-
-        bonus:
-            bonus
-
+        data: dataAtual(),
+        tipo: tipoEntrada === "Semanada" ? (c.periodicidadeBase || "Semanada") : tipoEntrada,
+        valor: d.valor,
+        carteira: d.carteira,
+        sonhos: d.sonhos,
+        tesouro: d.tesouro,
+        bonus: d.bonus
     });
 
-
-    /*
-    Se já existem sonhos,
-    o novo dinheiro disponível
-    em Sonhos é distribuído
-    automaticamente.
-    */
-
     distribuirSonhosAutomaticamente();
-
-
     guardar();
-
     atualizarTudo();
-
     fecharFormularios();
-
 }
 
 
@@ -2947,7 +2656,7 @@ function atualizarDestinos() {
         carteira: "👛 Carteira",
         sonhos: "🌈 Sonhos",
         tesouro: "🏆 Tesouro",
-        bonus: "🎁 Bónus / Partilha"
+        bonus: "🎁 Bónus"
     };
 
     /*
@@ -4300,14 +4009,8 @@ function atualizarTudo() {
     const botaoPagamento =
         document.querySelector("button.semanada");
     if (botaoPagamento) {
-        const periodicidade = c.periodicidadeBase || "Semanada";
-        const nomesBotao = {
-            Semanada: "Semanada",
-            Quinzenada: "Quinzenada",
-            Mesada: "Mesada"
-        };
         botaoPagamento.innerText =
-            "＋ Adicionar " + (nomesBotao[periodicidade] || "Semanada");
+            "＋ Adicionar dinheiro";
     }
 
 
@@ -4386,37 +4089,15 @@ if (
 
 
 
-
-
 <script>
-/* PWA — atualização automática da aplicação */
-if ("serviceWorker" in navigator && window.isSecureContext) {
-    window.addEventListener("load", async () => {
-        try {
-            const registration = await navigator.serviceWorker.register("./sw.js", {
-                updateViaCache: "none"
-            });
-            await registration.update();
-        } catch (erro) {
-            console.warn("Cofrinhos: service worker não registado.", erro);
-        }
+if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./sw.js").catch(err => {
+            console.warn("Cofrinhos: service worker não registado.", err);
+        });
     });
 }
 </script>
-
-
-<div class="regra" style="margin-top:14px; text-align:center;">
-    <strong>© 2026 João Pereira — Cofrinhos</strong>
-    <p style="margin:6px 0 0; line-height:1.5;">
-        Todos os direitos reservados.
-    </p>
-    <p style="margin:6px 0 0; line-height:1.5; font-size:12px; color:#777;">
-        Aplicação, código, conteúdos, textos, estrutura e elementos gráficos
-        desenvolvidos para os Cofrinhos.
-        A reprodução, cópia, adaptação ou distribuição sem autorização
-        do titular dos direitos não é permitida.
-    </p>
-</div>
 
 </body>
 
