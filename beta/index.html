@@ -25,7 +25,6 @@
 <meta name="apple-mobile-web-app-title" content="Cofrinhos">
 
 <title>🐷 Cofrinhos</title>
-<!-- Beta 1.6 — sistema de avatares -->
 
 <style>
 
@@ -631,16 +630,21 @@ textarea {
 }
 
 
-/* AVATARES */
+/* ===== AVATARES + CONFIGURAÇÃO DOS COFRINHOS ===== */
+.avatar-escolha{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;max-height:48vh;overflow:auto;padding:4px}
+.avatar-opcao{border:3px solid transparent;border-radius:16px;padding:3px;background:#f7f4ff;cursor:pointer}
+.avatar-opcao.selecionado{border-color:#7657e8;background:#eee8ff}
+.avatar-opcao img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:12px;display:block}
 .avatar-atual-wrap{display:flex;align-items:center;gap:10px;margin:10px 0 14px}
-.avatar-atual{width:64px;height:64px;border-radius:20px;object-fit:cover;background:#f6f3ff;border:2px solid #e5e1f1}
-.avatar-atual-info{flex:1}.avatar-atual-info strong{display:block;color:var(--cor-tinta,#26324a);margin-bottom:3px}.avatar-atual-info span{color:#7b8498;font-size:13px}
-.avatar-escolha{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-height:58vh;overflow-y:auto;padding:4px;margin:12px 0 18px}
-.avatar-opcao{border:3px solid transparent;border-radius:18px;padding:4px;background:#f7f4ff;cursor:pointer}
-.avatar-opcao.selecionado{border-color:#7657e8;background:#eee8ff;box-shadow:0 0 0 2px rgba(118,87,232,.12)}
-.avatar-opcao img{width:100%;aspect-ratio:1;display:block;object-fit:cover;border-radius:14px}
-.avatar-modal{max-width:430px}.avatar-modal h2{margin:0 0 4px;font-size:25px}.avatar-modal p{margin:0;color:#7b8498}
-.avatar-modal-botoes{display:flex;gap:9px}.avatar-modal-botoes button{flex:1}
+.avatar-atual{width:62px;height:62px;border-radius:18px;object-fit:cover;background:#f6f3ff;border:2px solid #e5e1f1}
+.avatar-atual-info{flex:1}.avatar-atual-info strong{display:block;margin-bottom:3px}.avatar-atual-info span{color:#7b8498;font-size:13px}
+.avatar-wizard{max-width:470px}.avatar-wizard h2{margin:0 0 5px}.avatar-wizard small{color:#7b8498}
+.cofre-opcoes{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:12px 0}
+.cofre-opcao{border:2px solid #e5e1f1;border-radius:14px;padding:10px;background:#fff;display:flex;align-items:center;gap:8px}
+.cofre-opcao input{width:auto}.saldo-inicial-grid{display:grid;grid-template-columns:1fr 110px;gap:8px;align-items:center;margin-top:8px}
+.dist-euros{display:grid;grid-template-columns:1fr 120px 70px;gap:8px;align-items:center;margin:8px 0}
+.dist-euros input{margin:0}
+.dist-pct{text-align:right;color:#6d6682;font-size:13px}
 
 </style>
 
@@ -806,12 +810,12 @@ button {
     </div>
 
     <div class="avatar-atual-wrap">
-        <img id="avatarAtual" class="avatar-atual" src="./outros_01.png" alt="Avatar da criança">
+        <img id="avatarAtual" class="avatar-atual" src="./outros_01.png" alt="Avatar">
         <div class="avatar-atual-info">
             <strong id="avatarAtualNome">Avatar</strong>
-            <span>Escolhe um avatar que se pareça contigo.</span>
+            <span>O avatar escolhido pela criança.</span>
         </div>
-        <button class="extra" style="width:auto;padding:10px 12px;border-radius:12px" onclick="alterarAvatar()">✏️</button>
+        <button class="extra" onclick="alterarAvatar()" style="width:auto;padding:9px 11px;">✏️</button>
     </div>
 
     <select id="criancaSelect"
@@ -1018,52 +1022,14 @@ button {
          class="resultado">
     </div>
 
-    <h3>
-        Divisão dos Desejos
-    </h3>
+    <h3>💶 Como queres dividir este dinheiro?</h3>
+    <p style="color:#7b8498;font-size:13px;margin-top:-4px;">
+        Escreve os euros. A percentagem é calculada automaticamente.
+    </p>
 
-    <div class="percentagens">
+    <div id="distribuicaoEuros"></div>
 
-        <div>
-
-            <label>
-                🏆 Tesouro
-            </label>
-
-            <input type="number"
-                   id="pTesouro"
-                   value="30"
-                   oninput="calcularEntrada()">
-
-        </div>
-
-        <div>
-
-            <label>
-                🌈 Sonhos
-            </label>
-
-            <input type="number"
-                   id="pSonhos"
-                   value="50"
-                   oninput="calcularEntrada()">
-
-        </div>
-
-        <div>
-
-            <label>
-                🎁 Bónus
-            </label>
-
-            <input type="number"
-                   id="pBonus"
-                   value="20"
-                   oninput="calcularEntrada()">
-
-        </div>
-
-    </div>
+    <div id="resultadoEntrada" class="resultado"></div>
 
     <button class="confirmar"
             onclick="confirmarEntrada()">
@@ -1484,16 +1450,52 @@ button {
 </div>
 
 
-<!-- ESCOLHA DE AVATAR -->
-<div id="avatarModal" class="popup-fundo">
-  <div class="popup avatar-modal">
-    <h2>🌟 Escolhe o teu avatar</h2>
-    <p>Podes escolher o que mais se parece contigo.</p>
-    <div id="avatarEscolha" class="avatar-escolha"></div>
-    <div class="avatar-modal-botoes">
-      <button type="button" onclick="cancelarEscolhaAvatar()" style="background:#f1edf9;color:#4f4964">Cancelar</button>
-      <button type="button" onclick="confirmarEscolhaAvatar()">❤️ Escolher</button>
+<!-- =======================================================
+     CRIAÇÃO DA CRIANÇA
+======================================================= -->
+<div id="criancaWizard" class="popup-fundo">
+  <div class="popup avatar-wizard">
+    <h2>👋 Vamos criar o teu perfil!</h2>
+    <small>1. Nome → 2. Avatar → 3. Cofrinhos → 4. Saldo inicial</small>
+
+    <label style="display:block;margin-top:14px">Nome da criança</label>
+    <input id="wizardNome" type="text" placeholder="Ex.: Inês">
+
+    <h3>🌟 Escolhe o teu avatar</h3>
+    <div id="wizardAvatares" class="avatar-escolha"></div>
+
+    <h3>🐷 Quais os Cofrinhos que utilizas?</h3>
+    <div class="cofre-opcoes">
+      <label class="cofre-opcao"><input type="checkbox" id="wCarteira" checked> 👛 Carteira</label>
+      <label class="cofre-opcao"><input type="checkbox" id="wSonhos" checked> 🌈 Sonhos</label>
+      <label class="cofre-opcao"><input type="checkbox" id="wTesouro"> 🏆 Tesouro</label>
+      <label class="cofre-opcao"><input type="checkbox" id="wBonus"> 🎁 Bónus</label>
     </div>
+
+    <h3>💶 O que já tens em cada Cofrinho?</h3>
+    <div class="saldo-inicial-grid">
+      <label>👛 Carteira</label><input id="wSaldoCarteira" type="number" min="0" step="0.01" value="0">
+      <label>🌈 Sonhos</label><input id="wSaldoSonhos" type="number" min="0" step="0.01" value="0">
+      <label>🏆 Tesouro</label><input id="wSaldoTesouro" type="number" min="0" step="0.01" value="0">
+      <label>🎁 Bónus</label><input id="wSaldoBonus" type="number" min="0" step="0.01" value="0">
+    </div>
+
+    <label style="display:block;margin-top:12px">💰 Valor habitual da semanada</label>
+    <input id="wSemanada" type="number" min="0.01" step="0.01" value="12">
+
+    <button class="confirmar" onclick="confirmarCriancaWizard()" style="margin-top:14px">❤️ Criar perfil</button>
+    <button class="cancelar" onclick="fecharWizardCrianca()">Cancelar</button>
+  </div>
+</div>
+
+
+<div id="avatarModal" class="popup-fundo">
+  <div class="popup avatar-wizard">
+    <h2>🌟 Escolhe o teu avatar</h2>
+    <p style="color:#7b8498">Escolhe o que mais se parece contigo.</p>
+    <div id="avatarEscolha" class="avatar-escolha"></div>
+    <button class="confirmar" onclick="confirmarEscolhaAvatar()">❤️ Escolher</button>
+    <button class="cancelar" onclick="cancelarEscolhaAvatar()">Cancelar</button>
   </div>
 </div>
 
@@ -1552,24 +1554,79 @@ const AVATARES=[];
 for(let i=1;i<=16;i++)AVATARES.push({id:`meninas_${String(i).padStart(2,"0")}`,ficheiro:`meninas_${String(i).padStart(2,"0")}.png`,grupo:"Menina"});
 for(let i=1;i<=16;i++)AVATARES.push({id:`meninos_${String(i).padStart(2,"0")}`,ficheiro:`meninos_${String(i).padStart(2,"0")}.png`,grupo:"Menino"});
 for(let i=1;i<=8;i++)AVATARES.push({id:`outros_${String(i).padStart(2,"0")}`,ficheiro:`outros_${String(i).padStart(2,"0")}.png`,grupo:"Outro"});
-let avatarPendente=null,avatarCallback=null;
+let avatarPendente="outros_01",avatarCallback=null;
+
 function caminhoAvatar(id){const a=AVATARES.find(x=>x.id===id)||AVATARES[0];return "./"+a.ficheiro;}
+
+function renderizarAvatares(idInicial,areaId){
+ const area=document.getElementById(areaId); if(!area)return;
+ area.innerHTML="";
+ AVATARES.forEach(a=>{
+   const b=document.createElement("button");b.type="button";b.className="avatar-opcao"+(a.id===idInicial?" selecionado":"");
+   const img=document.createElement("img");img.src=caminhoAvatar(a.id);img.alt=a.grupo+" avatar";b.appendChild(img);
+   b.onclick=()=>{avatarPendente=a.id;area.querySelectorAll(".avatar-opcao").forEach(x=>x.classList.remove("selecionado"));b.classList.add("selecionado");};
+   area.appendChild(b);
+ });
+}
+
 function abrirEscolhaAvatar(inicial,callback){
  avatarPendente=inicial||"outros_01";avatarCallback=callback;
- const area=document.getElementById("avatarEscolha");area.innerHTML="";
- AVATARES.forEach(a=>{const b=document.createElement("button");b.type="button";b.className="avatar-opcao"+(a.id===avatarPendente?" selecionado":"");b.title=a.grupo;
- const img=document.createElement("img");img.src=caminhoAvatar(a.id);img.alt=a.grupo+" avatar";b.appendChild(img);
- b.onclick=()=>{avatarPendente=a.id;area.querySelectorAll(".avatar-opcao").forEach(x=>x.classList.remove("selecionado"));b.classList.add("selecionado");};
- area.appendChild(b);});
+ renderizarAvatares(avatarPendente,"avatarEscolha");
  document.getElementById("avatarModal").style.display="flex";
 }
-function confirmarEscolhaAvatar(){if(!avatarPendente)return;const escolhido=avatarPendente,cb=avatarCallback;document.getElementById("avatarModal").style.display="none";avatarPendente=null;avatarCallback=null;if(typeof cb==="function")cb(escolhido);}
-function cancelarEscolhaAvatar(){document.getElementById("avatarModal").style.display="none";avatarPendente=null;avatarCallback=null;}
+function confirmarEscolhaAvatar(){const id=avatarPendente,cb=avatarCallback;document.getElementById("avatarModal").style.display="none";avatarCallback=null;if(cb)cb(id);}
+function cancelarEscolhaAvatar(){document.getElementById("avatarModal").style.display="none";avatarCallback=null;}
+
 function atualizarAvatarAtual(){
  const c=atual(),img=document.getElementById("avatarAtual"),nome=document.getElementById("avatarAtualNome");if(!img||!nome)return;
- const a=AVATARES.find(x=>x.id===(c&&c.avatar))||AVATARES[0];img.src=caminhoAvatar(a.id);nome.textContent=a.grupo+" escolhido";
+ const id=c&&c.avatar?c.avatar:"outros_01",a=AVATARES.find(x=>x.id===id)||AVATARES[0];
+ img.src=caminhoAvatar(a.id);nome.textContent=a.grupo+" escolhido";
 }
-function alterarAvatar(){const c=atual();if(!c)return;abrirEscolhaAvatar(c.avatar,id=>{c.avatar=id;guardar();atualizarAvatarAtual();atualizarListaCriancas();});}
+function alterarAvatar(){
+ const c=atual();if(!c)return;
+ abrirEscolhaAvatar(c.avatar,id=>{c.avatar=id;guardar();atualizarAvatarAtual();});
+}
+
+function abrirWizardCrianca(){
+ avatarPendente="outros_01";
+ document.getElementById("wizardNome").value="";
+ document.getElementById("wSaldoCarteira").value=0;
+ document.getElementById("wSaldoSonhos").value=0;
+ document.getElementById("wSaldoTesouro").value=0;
+ document.getElementById("wSaldoBonus").value=0;
+ document.getElementById("wSemanada").value=12;
+ document.getElementById("wCarteira").checked=true;
+ document.getElementById("wSonhos").checked=true;
+ document.getElementById("wTesouro").checked=false;
+ document.getElementById("wBonus").checked=false;
+ renderizarAvatares("outros_01","wizardAvatares");
+ document.getElementById("criancaWizard").style.display="flex";
+}
+function fecharWizardCrianca(){document.getElementById("criancaWizard").style.display="none";}
+function confirmarCriancaWizard(){
+ const nome=document.getElementById("wizardNome").value.trim();
+ const sem=parseFloat(document.getElementById("wSemanada").value)||0;
+ if(!nome){alert("Introduza o nome da criança.");return;}
+ if(sem<=0){alert("Introduza uma semanada válida.");return;}
+
+ const ativos={
+   carteira:document.getElementById("wCarteira").checked,
+   sonhos:document.getElementById("wSonhos").checked,
+   tesouro:document.getElementById("wTesouro").checked,
+   bonus:document.getElementById("wBonus").checked
+ };
+ if(!Object.values(ativos).some(Boolean)){alert("Escolha pelo menos um Cofrinho.");return;}
+
+ const c={
+   nome,avatar:avatarPendente,cofrinhosAtivos:ativos,
+   carteira:parseFloat(document.getElementById("wSaldoCarteira").value)||0,
+   sonhos:parseFloat(document.getElementById("wSaldoSonhos").value)||0,
+   tesouro:parseFloat(document.getElementById("wSaldoTesouro").value)||0,
+   bonus:parseFloat(document.getElementById("wSaldoBonus").value)||0,
+   semanadaBase:sem,periodicidadeBase:"Semanada",sonhosLista:[],historico:[]
+ };
+ criancas.push(c);criancaAtual=criancas.length-1;guardar();fecharWizardCrianca();mostrarAplicacao();
+}
 
 /* =========================================================
    FUNÇÕES BÁSICAS
@@ -1771,6 +1828,7 @@ function normalizarDados() {
             : "Semanada";
 
         if (!c.avatar || !AVATARES.some(a => a.id === c.avatar)) c.avatar = "outros_01";
+        if (!c.cofrinhosAtivos) c.cofrinhosAtivos = {carteira:true,sonhos:true,tesouro:true,bonus:true};
 
         if (!Array.isArray(c.sonhosLista)) {
             c.sonhosLista = [];
@@ -1837,36 +1895,7 @@ function mostrarAplicacao() {
 ========================================================= */
 
 function adicionarCrianca() {
-
-    const nome = prompt("Nome da criança:");
-    if (!nome || !nome.trim()) return;
-
-    abrirEscolhaAvatar("outros_01", (avatarEscolhido) => {
-
-        const valor = parseFloat(prompt("Valor da semanada:", "12"));
-
-        if (isNaN(valor) || valor <= 0) {
-            alert("Valor inválido.");
-            return;
-        }
-
-        criancas.push({
-            nome: nome.trim(),
-            avatar: avatarEscolhido,
-            carteira: 0,
-            sonhos: 0,
-            tesouro: 0,
-            bonus: 0,
-            semanadaBase: valor,
-            periodicidadeBase: "Semanada",
-            sonhosLista: [],
-            historico: []
-        });
-
-        criancaAtual = criancas.length - 1;
-        guardar();
-        mostrarAplicacao();
-    });
+    abrirWizardCrianca();
 }
 
 
@@ -1892,9 +1921,9 @@ function atualizarListaCriancas() {
             option.value =
                 indice;
 
-            const av = AVATARES.find(a => a.id === c.avatar);
-            const icone = av && av.grupo === "Menino" ? "👦" : (av && av.grupo === "Menina" ? "👧" : "🧒");
-            option.textContent = icone + " " + c.nome;
+            const av=AVATARES.find(a=>a.id===c.avatar);
+            const icone=av&&av.grupo==="Menino"?"👦":(av&&av.grupo==="Menina"?"👧":"🧒");
+            option.textContent=icone+" "+c.nome;
 
             select.appendChild(
                 option
@@ -2067,7 +2096,7 @@ function abrirEntrada(tipo) {
         : "";
 
 
-    calcularEntrada();
+    renderizarDistribuicaoEntrada();
 
 
     setTimeout(
@@ -2084,361 +2113,62 @@ function abrirEntrada(tipo) {
 }
 
 
-function calcularEntrada() {
-
-    const valor =
-        parseFloat(
-            document
-                .getElementById(
-                    "valorEntrada"
-                )
-                .value
-        ) || 0;
-
-
-    const pTesouro =
-        parseFloat(
-            document
-                .getElementById(
-                    "pTesouro"
-                )
-                .value
-        ) || 0;
-
-
-    const pSonhos =
-        parseFloat(
-            document
-                .getElementById(
-                    "pSonhos"
-                )
-                .value
-        ) || 0;
-
-
-    const pBonus =
-        parseFloat(
-            document
-                .getElementById(
-                    "pBonus"
-                )
-                .value
-        ) || 0;
-
-
-    const totalPercentagens =
-        pTesouro +
-        pSonhos +
-        pBonus;
-
-
-    const resultado =
-        document.getElementById(
-            "resultadoEntrada"
-        );
-
-
-    if (
-        totalPercentagens !== 100
-    ) {
-
-        resultado.innerHTML =
-            "⚠️ Os Desejos têm de totalizar <strong>100%</strong>.";
-
-        return;
-
-    }
-
-
-    const c = atual();
-
-
-    /*
-    50% da entrada pertence à Carteira.
-    */
-
-    const parteCarteira =
-        valor * 0.50;
-
-
-    /*
-    Limite = 3 × metade da semanada atual.
-    */
-
-    const limiteCarteira =
-        c.semanadaBase *
-        0.50 *
-        3;
-
-
-    /*
-    Quanto ainda cabe na Carteira.
-    */
-
-    const espacoCarteira =
-        Math.max(
-            0,
-            limiteCarteira -
-            c.carteira
-        );
-
-
-    /*
-    O que realmente entra na Carteira.
-    */
-
-    const carteira =
-        Math.min(
-            parteCarteira,
-            espacoCarteira
-        );
-
-
-    /*
-    Excedente da Carteira vai para Sonhos.
-    */
-
-    const excedente =
-        parteCarteira -
-        carteira;
-
-
-    /*
-    Os outros 50% são os Desejos.
-    */
-
-    const desejos =
-        valor * 0.50;
-
-
-    const tesouro =
-        desejos *
-        pTesouro /
-        100;
-
-
-    const sonhos =
-        desejos *
-        pSonhos /
-        100 +
-        excedente;
-
-
-    const bonus =
-        desejos *
-        pBonus /
-        100;
-
-
-    resultado.innerHTML =
-
-        "👛 Carteira: <strong>" +
-        euros(carteira) +
-        "</strong><br>" +
-
-        "🏆 Tesouro: <strong>" +
-        euros(tesouro) +
-        "</strong><br>" +
-
-        "🌈 Sonhos: <strong>" +
-        euros(sonhos) +
-        "</strong><br>" +
-
-        "🎁 Bónus: <strong>" +
-        euros(bonus) +
-        "</strong>" +
-
-        (
-            excedente > 0
-            ?
-            "<br><br>🔄 " +
-            euros(excedente) +
-            " passaram automaticamente para Sonhos."
-            :
-            ""
-        );
-
+function obterAtivos(c){
+ return c&&c.cofrinhosAtivos?c.cofrinhosAtivos:{carteira:true,sonhos:true,tesouro:true,bonus:true};
 }
-
-
-function confirmarEntrada() {
-
-    const c = atual();
-
-
-    const valor =
-        parseFloat(
-            document
-                .getElementById(
-                    "valorEntrada"
-                )
-                .value
-        ) || 0;
-
-
-    const pTesouro =
-        parseFloat(
-            document
-                .getElementById(
-                    "pTesouro"
-                )
-                .value
-        ) || 0;
-
-
-    const pSonhos =
-        parseFloat(
-            document
-                .getElementById(
-                    "pSonhos"
-                )
-                .value
-        ) || 0;
-
-
-    const pBonus =
-        parseFloat(
-            document
-                .getElementById(
-                    "pBonus"
-                )
-                .value
-        ) || 0;
-
-
-    if (valor <= 0) {
-
-        alert(
-            "Introduza um valor válido."
-        );
-
-        return;
-
-    }
-
-
-    if (
-        pTesouro +
-        pSonhos +
-        pBonus !==
-        100
-    ) {
-
-        alert(
-            "Os Desejos têm de totalizar 100%."
-        );
-
-        return;
-
-    }
-
-
-    const parteCarteira =
-        valor * 0.50;
-
-
-    const limiteCarteira =
-        c.semanadaBase *
-        0.50 *
-        3;
-
-
-    const espacoCarteira =
-        Math.max(
-            0,
-            limiteCarteira -
-            c.carteira
-        );
-
-
-    const carteira =
-        Math.min(
-            parteCarteira,
-            espacoCarteira
-        );
-
-
-    const excedente =
-        parteCarteira -
-        carteira;
-
-
-    const desejos =
-        valor * 0.50;
-
-
-    const tesouro =
-        desejos *
-        pTesouro /
-        100;
-
-
-    const sonhos =
-        desejos *
-        pSonhos /
-        100 +
-        excedente;
-
-
-    const bonus =
-        desejos *
-        pBonus /
-        100;
-
-
-    c.carteira += carteira;
-
-    c.tesouro += tesouro;
-
-    c.sonhos += sonhos;
-
-    c.bonus += bonus;
-
-
-    c.historico.push({
-
-        data:
-            dataAtual(),
-
-        tipo:
-            tipoEntrada === "Semanada"
-            ? (c.periodicidadeBase || "Semanada")
-            : tipoEntrada,
-
-        valor:
-            valor,
-
-        carteira:
-            carteira,
-
-        sonhos:
-            sonhos,
-
-        tesouro:
-            tesouro,
-
-        bonus:
-            bonus
-
-    });
-
-
-    /*
-    Se já existem sonhos,
-    o novo dinheiro disponível
-    em Sonhos é distribuído
-    automaticamente.
-    */
-
-    distribuirSonhosAutomaticamente();
-
-
-    guardar();
-
-    atualizarTudo();
-
-    fecharFormularios();
-
+function renderizarDistribuicaoEntrada(){
+ const c=atual();if(!c)return;
+ const area=document.getElementById("distribuicaoEuros");if(!area)return;
+ const ativos=obterAtivos(c);
+ const nomes={carteira:"👛 Carteira",sonhos:"🌈 Sonhos",tesouro:"🏆 Tesouro",bonus:"🎁 Bónus"};
+ area.innerHTML="";
+ Object.keys(nomes).forEach(k=>{
+   if(!ativos[k])return;
+   const row=document.createElement("div");row.className="dist-euros";
+   row.innerHTML=`<label>${nomes[k]}</label><input type="number" min="0" step="0.01" id="d_${k}" value="0" oninput="calcularEntrada()"><span class="dist-pct" id="pct_${k}">0%</span>`;
+   area.appendChild(row);
+ });
+ const existentes=["carteira","sonhos","tesouro","bonus"];
+ const valor=parseFloat(document.getElementById("valorEntrada").value)||0;
+ let restante=valor;
+ const ativosList=existentes.filter(k=>ativos[k]);
+ // Sugestão inicial: manter 50/50 quando só Carteira+Sonhos; caso contrário dividir igualmente.
+ if(ativosList.length===2 && ativosList.includes("carteira") && ativosList.includes("sonhos")){
+   document.getElementById("d_carteira").value=(valor/2).toFixed(2);
+   document.getElementById("d_sonhos").value=(valor/2).toFixed(2);
+ } else if(ativosList.length){
+   const parte=valor/ativosList.length;
+   ativosList.forEach((k,i)=>document.getElementById("d_"+k).value=(i===ativosList.length-1?(valor-parte*(ativosList.length-1)):parte).toFixed(2));
+ }
+ calcularEntrada();
+}
+function lerDistribuicao(){
+ const c=atual(),ativos=obterAtivos(c),r={carteira:0,sonhos:0,tesouro:0,bonus:0};
+ ["carteira","sonhos","tesouro","bonus"].forEach(k=>{if(ativos[k])r[k]=Math.max(0,parseFloat(document.getElementById("d_"+k)?.value)||0);});
+ return r;
+}
+function calcularEntrada(){
+ const valor=parseFloat(document.getElementById("valorEntrada").value)||0;
+ const d=lerDistribuicao();
+ const total=d.carteira+d.sonhos+d.tesouro+d.bonus;
+ const resultado=document.getElementById("resultadoEntrada");
+ ["carteira","sonhos","tesouro","bonus"].forEach(k=>{
+   const el=document.getElementById("pct_"+k);if(el)el.textContent=(total?((d[k]/total)*100).toFixed(1):"0")+"%";
+ });
+ if(Math.abs(total-valor)>0.009){
+   resultado.innerHTML=`⚠️ A divisão tem <strong>${euros(total)}</strong>. Tem de totalizar <strong>${euros(valor)}</strong>.`;
+   return;
+ }
+ resultado.innerHTML="✅ Divisão correta — <strong>100%</strong> distribuído.";
+}
+function confirmarEntrada(){
+ const c=atual(),valor=parseFloat(document.getElementById("valorEntrada").value)||0,d=lerDistribuicao();
+ const total=d.carteira+d.sonhos+d.tesouro+d.bonus;
+ if(valor<=0){alert("Introduza um valor válido.");return;}
+ if(Math.abs(total-valor)>0.009){alert("Os valores dos Cofrinhos têm de totalizar exatamente "+euros(valor)+".");return;}
+ c.carteira+=d.carteira;c.sonhos+=d.sonhos;c.tesouro+=d.tesouro;c.bonus+=d.bonus;
+ c.historico.push({data:dataAtual(),tipo:tipoEntrada==="Semanada"?(c.periodicidadeBase||"Semanada"):tipoEntrada,valor,carteira:d.carteira,sonhos:d.sonhos,tesouro:d.tesouro,bonus:d.bonus});
+ distribuirSonhosAutomaticamente();guardar();atualizarTudo();fecharFormularios();
 }
 
 
