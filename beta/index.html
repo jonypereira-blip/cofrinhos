@@ -253,43 +253,6 @@ textarea {
 
 
 /* =========================================================
-   AVATARES
-========================================================= */
-
-const AVATARES = {
-    meninas: Array.from({length:16}, (_,i) => `meninas_${String(i+1).padStart(2,"0")}.png`),
-    meninos: Array.from({length:16}, (_,i) => `meninos_${String(i+1).padStart(2,"0")}.png`),
-    outros: Array.from({length:8}, (_,i) => `outros_${String(i+1).padStart(2,"0")}.png`)
-};
-
-function escolherAvatar(indice) {
-    const c = criancas[indice];
-    if (!c) return;
-    const anterior = document.getElementById("avatarOverlay");
-    if (anterior) anterior.remove();
-    const overlay = document.createElement("div");
-    overlay.id = "avatarOverlay";
-    overlay.className = "avatar-overlay";
-    const modal = document.createElement("div");
-    modal.className = "avatar-modal";
-    modal.innerHTML = `<h2>👤 Escolhe o teu avatar</h2><p>Escolhe o que mais se parece contigo.</p><div class="avatar-tabs"><button class="avatar-tab ativo" data-grupo="meninas">👧 Meninas</button><button class="avatar-tab" data-grupo="meninos">👦 Meninos</button><button class="avatar-tab" data-grupo="outros">🧒 Outros</button></div><div id="avatarGrid" class="avatar-grid"></div><button id="fecharAvatar" class="avatar-fechar">Fechar</button>`;
-    overlay.appendChild(modal); document.body.appendChild(overlay);
-    const grid=modal.querySelector("#avatarGrid"), tabs=modal.querySelectorAll(".avatar-tab");
-    function mostrarGrupo(grupo){
-        tabs.forEach(t=>t.classList.toggle("ativo",t.dataset.grupo===grupo)); grid.innerHTML="";
-        AVATARES[grupo].forEach(nome=>{
-            const b=document.createElement("button"); b.type="button"; b.className="avatar-option"+(c.avatar===nome?" selecionado":""); b.title="Escolher avatar"; b.innerHTML=`<img src="${nome}" alt="Avatar">`;
-            b.onclick=()=>{c.avatar=nome; guardar(); atualizarListaCriancas(); atualizarTudo(); overlay.remove();}; grid.appendChild(b);
-        });
-    }
-    tabs.forEach(t=>t.onclick=()=>mostrarGrupo(t.dataset.grupo));
-    modal.querySelector("#fecharAvatar").onclick=()=>overlay.remove();
-    overlay.addEventListener("click",e=>{if(e.target===overlay)overlay.remove()});
-    const grupoInicial=c.avatar&&c.avatar.startsWith("meninos_")?"meninos":c.avatar&&c.avatar.startsWith("outros_")?"outros":"meninas";
-    mostrarGrupo(grupoInicial);
-}
-
-/* =========================================================
    FORMULÁRIOS
 ========================================================= */
 
@@ -754,6 +717,43 @@ button {
 }
 </style>
 
+<script id="cofrinhos-avatares-v1-7">
+const AVATARES = {
+  meninas: Array.from({length:16}, (_,i) => `meninas_${String(i+1).padStart(2,"0")}.png`),
+  meninos: Array.from({length:16}, (_,i) => `meninos_${String(i+1).padStart(2,"0")}.png`),
+  outros: Array.from({length:8}, (_,i) => `outros_${String(i+1).padStart(2,"0")}.png`)
+};
+
+function abrirSeletorAvatar(crianca, aoEscolher) {
+  const anterior = document.getElementById("avatarOverlay");
+  if (anterior) anterior.remove();
+  const overlay=document.createElement("div");
+  overlay.id="avatarOverlay"; overlay.className="avatar-overlay";
+  const modal=document.createElement("div"); modal.className="avatar-modal";
+  modal.innerHTML=`<h2>👤 Escolhe o teu avatar</h2><p>Escolhe o que mais se parece contigo.</p><div class="avatar-tabs"><button type="button" class="avatar-tab ativo" data-grupo="meninas">👧 Meninas</button><button type="button" class="avatar-tab" data-grupo="meninos">👦 Meninos</button><button type="button" class="avatar-tab" data-grupo="outros">🧒 Outros</button></div><div id="avatarGrid" class="avatar-grid"></div><button type="button" id="fecharAvatar" class="avatar-fechar">Fechar</button>`;
+  overlay.appendChild(modal); document.body.appendChild(overlay);
+  const grid=modal.querySelector("#avatarGrid"), tabs=modal.querySelectorAll(".avatar-tab");
+  function mostrarGrupo(grupo){
+    tabs.forEach(t=>t.classList.toggle("ativo",t.dataset.grupo===grupo)); grid.innerHTML="";
+    AVATARES[grupo].forEach(nome=>{
+      const b=document.createElement("button"); b.type="button"; b.className="avatar-option"+(crianca.avatar===nome?" selecionado":""); b.title="Escolher avatar";
+      b.innerHTML=`<img src="${nome}" alt="Avatar">`;
+      b.onclick=()=>{crianca.avatar=nome; if(typeof aoEscolher==="function") aoEscolher(nome); overlay.remove();};
+      grid.appendChild(b);
+    });
+  }
+  tabs.forEach(t=>t.onclick=()=>mostrarGrupo(t.dataset.grupo));
+  modal.querySelector("#fecharAvatar").onclick=()=>overlay.remove();
+  overlay.addEventListener("click",e=>{if(e.target===overlay)overlay.remove()});
+  const grupoInicial=crianca.avatar&&crianca.avatar.startsWith("meninos_")?"meninos":crianca.avatar&&crianca.avatar.startsWith("outros_")?"outros":"meninas";
+  mostrarGrupo(grupoInicial);
+}
+
+function escolherAvatar(indice){
+  const c=criancas[indice]; if(!c) return;
+  abrirSeletorAvatar(c, ()=>{ guardar(); atualizarListaCriancas(); atualizarTudo(); });
+}
+</script>
 </head>
 
 
@@ -1818,24 +1818,20 @@ function mostrarAplicacao() {
 
 function adicionarCrianca() {
 
-    const nome =
-        prompt(
-            "Nome da criança:"
-        );
+    const nome = prompt("Nome da criança:");
+    if (!nome || !nome.trim()) return;
 
-
-    if (!nome || !nome.trim()) {
-        return;
-    }
-
-
-    const valor =
-        parseFloat(
-            prompt(
-                "Valor da semanada:",
-                "12"
-            )
-        );
+    // O avatar é escolhido logo no início, antes da semanada.
+    const novaCrianca = { nome: nome.trim(), avatar: "outros_01.png" };
+    abrirSeletorAvatar(novaCrianca, function(){
+        const valor = parseFloat(prompt("Valor da semanada:", "12"));
+        if (isNaN(valor) || valor <= 0) { alert("Valor inválido."); return; }
+        criancas.push({
+            nome: novaCrianca.nome, avatar: novaCrianca.avatar, carteira:0, sonhos:0, tesouro:0, bonus:0,
+            semanadaBase:valor, periodicidadeBase:"Semanada", sonhosLista:[], historico:[]
+        });
+        criancaAtual=criancas.length-1; guardar(); mostrarAplicacao();
+    });
 
 
     if (
@@ -1885,7 +1881,6 @@ function adicionarCrianca() {
 
     mostrarAplicacao();
 
-    setTimeout(() => escolherAvatar(criancaAtual), 120);
 
 }
 
