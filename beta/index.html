@@ -25,6 +25,7 @@
 <meta name="apple-mobile-web-app-title" content="Cofrinhos">
 
 <title>🐷 Cofrinhos</title>
+<!-- Beta 1.6 — sistema de avatares -->
 
 <style>
 
@@ -630,8 +631,17 @@ textarea {
 }
 
 
-/* AVATARES DAS CRIANÇAS */
-.avatar-crianca-wrap{display:flex;align-items:center;gap:12px;margin:10px 0 12px}.avatar-crianca-img{width:64px;height:64px;border-radius:18px;object-fit:cover;background:#f7f7f7;border:2px solid rgba(0,0,0,.06)}.avatar-crianca-info{flex:1}.avatar-crianca-info strong{display:block;font-size:13px;margin-bottom:3px}.avatar-crianca-info span{display:block;color:#777;font-size:12px}.avatar-escolher-btn{margin-top:8px;padding:9px 12px;border:0;border-radius:12px;background:#eee9ff;color:#4d3bc4;font-weight:700;cursor:pointer}.avatar-overlay{position:fixed;inset:0;background:rgba(0,0,0,.48);z-index:99999;display:flex;align-items:center;justify-content:center;padding:16px}.avatar-modal{width:min(560px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:26px;padding:18px;box-shadow:0 20px 60px rgba(0,0,0,.25)}.avatar-modal h2{margin:0 0 5px;text-align:center;font-size:22px}.avatar-modal p{margin:0 0 14px;text-align:center;color:#777;font-size:13px}.avatar-tabs{display:flex;gap:8px;margin-bottom:14px}.avatar-tab{flex:1;border:0;border-radius:12px;padding:10px;background:#f1f1f1;font-weight:700;cursor:pointer}.avatar-tab.ativo{background:#eee9ff;color:#4d3bc4}.avatar-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.avatar-option{border:2px solid transparent;background:#fafafa;border-radius:16px;padding:6px;cursor:pointer}.avatar-option.selecionado{border-color:#6d5dfc;background:#eee9ff}.avatar-option img{display:block;width:100%;aspect-ratio:1;object-fit:cover;border-radius:12px}.avatar-fechar{width:100%;margin-top:14px;border:0;border-radius:13px;padding:12px;background:#333;color:#fff;font-weight:700;cursor:pointer}@media(max-width:430px){.avatar-grid{grid-template-columns:repeat(4,1fr);gap:7px}.avatar-modal{padding:14px}.avatar-crianca-img{width:58px;height:58px}}
+/* AVATARES */
+.avatar-atual-wrap{display:flex;align-items:center;gap:10px;margin:10px 0 14px}
+.avatar-atual{width:64px;height:64px;border-radius:20px;object-fit:cover;background:#f6f3ff;border:2px solid #e5e1f1}
+.avatar-atual-info{flex:1}.avatar-atual-info strong{display:block;color:var(--cor-tinta,#26324a);margin-bottom:3px}.avatar-atual-info span{color:#7b8498;font-size:13px}
+.avatar-escolha{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-height:58vh;overflow-y:auto;padding:4px;margin:12px 0 18px}
+.avatar-opcao{border:3px solid transparent;border-radius:18px;padding:4px;background:#f7f4ff;cursor:pointer}
+.avatar-opcao.selecionado{border-color:#7657e8;background:#eee8ff;box-shadow:0 0 0 2px rgba(118,87,232,.12)}
+.avatar-opcao img{width:100%;aspect-ratio:1;display:block;object-fit:cover;border-radius:14px}
+.avatar-modal{max-width:430px}.avatar-modal h2{margin:0 0 4px;font-size:25px}.avatar-modal p{margin:0;color:#7b8498}
+.avatar-modal-botoes{display:flex;gap:9px}.avatar-modal-botoes button{flex:1}
+
 </style>
 
 <style>
@@ -717,43 +727,6 @@ button {
 }
 </style>
 
-<script id="cofrinhos-avatares-v1-7">
-const AVATARES = {
-  meninas: Array.from({length:16}, (_,i) => `meninas_${String(i+1).padStart(2,"0")}.png`),
-  meninos: Array.from({length:16}, (_,i) => `meninos_${String(i+1).padStart(2,"0")}.png`),
-  outros: Array.from({length:8}, (_,i) => `outros_${String(i+1).padStart(2,"0")}.png`)
-};
-
-function abrirSeletorAvatar(crianca, aoEscolher) {
-  const anterior = document.getElementById("avatarOverlay");
-  if (anterior) anterior.remove();
-  const overlay=document.createElement("div");
-  overlay.id="avatarOverlay"; overlay.className="avatar-overlay";
-  const modal=document.createElement("div"); modal.className="avatar-modal";
-  modal.innerHTML=`<h2>👤 Escolhe o teu avatar</h2><p>Escolhe o que mais se parece contigo.</p><div class="avatar-tabs"><button type="button" class="avatar-tab ativo" data-grupo="meninas">👧 Meninas</button><button type="button" class="avatar-tab" data-grupo="meninos">👦 Meninos</button><button type="button" class="avatar-tab" data-grupo="outros">🧒 Outros</button></div><div id="avatarGrid" class="avatar-grid"></div><button type="button" id="fecharAvatar" class="avatar-fechar">Fechar</button>`;
-  overlay.appendChild(modal); document.body.appendChild(overlay);
-  const grid=modal.querySelector("#avatarGrid"), tabs=modal.querySelectorAll(".avatar-tab");
-  function mostrarGrupo(grupo){
-    tabs.forEach(t=>t.classList.toggle("ativo",t.dataset.grupo===grupo)); grid.innerHTML="";
-    AVATARES[grupo].forEach(nome=>{
-      const b=document.createElement("button"); b.type="button"; b.className="avatar-option"+(crianca.avatar===nome?" selecionado":""); b.title="Escolher avatar";
-      b.innerHTML=`<img src="${nome}" alt="Avatar">`;
-      b.onclick=()=>{crianca.avatar=nome; if(typeof aoEscolher==="function") aoEscolher(nome); overlay.remove();};
-      grid.appendChild(b);
-    });
-  }
-  tabs.forEach(t=>t.onclick=()=>mostrarGrupo(t.dataset.grupo));
-  modal.querySelector("#fecharAvatar").onclick=()=>overlay.remove();
-  overlay.addEventListener("click",e=>{if(e.target===overlay)overlay.remove()});
-  const grupoInicial=crianca.avatar&&crianca.avatar.startsWith("meninos_")?"meninos":crianca.avatar&&crianca.avatar.startsWith("outros_")?"outros":"meninas";
-  mostrarGrupo(grupoInicial);
-}
-
-function escolherAvatar(indice){
-  const c=criancas[indice]; if(!c) return;
-  abrirSeletorAvatar(c, ()=>{ guardar(); atualizarListaCriancas(); atualizarTudo(); });
-}
-</script>
 </head>
 
 
@@ -832,11 +805,18 @@ function escolherAvatar(indice){
         👨‍👩‍👧‍👦 Criança
     </div>
 
+    <div class="avatar-atual-wrap">
+        <img id="avatarAtual" class="avatar-atual" src="./outros_01.png" alt="Avatar da criança">
+        <div class="avatar-atual-info">
+            <strong id="avatarAtualNome">Avatar</strong>
+            <span>Escolhe um avatar que se pareça contigo.</span>
+        </div>
+        <button class="extra" style="width:auto;padding:10px 12px;border-radius:12px" onclick="alterarAvatar()">✏️</button>
+    </div>
+
     <select id="criancaSelect"
             onchange="mudarCrianca()">
     </select>
-
-    <div id="avatarCriancaArea" class="avatar-crianca-wrap"></div>
 
     <div class="gestao">
 
@@ -1504,6 +1484,19 @@ function escolherAvatar(indice){
 </div>
 
 
+<!-- ESCOLHA DE AVATAR -->
+<div id="avatarModal" class="popup-fundo">
+  <div class="popup avatar-modal">
+    <h2>🌟 Escolhe o teu avatar</h2>
+    <p>Podes escolher o que mais se parece contigo.</p>
+    <div id="avatarEscolha" class="avatar-escolha"></div>
+    <div class="avatar-modal-botoes">
+      <button type="button" onclick="cancelarEscolhaAvatar()" style="background:#f1edf9;color:#4f4964">Cancelar</button>
+      <button type="button" onclick="confirmarEscolhaAvatar()">❤️ Escolher</button>
+    </div>
+  </div>
+</div>
+
 <!-- =======================================================
      POPUP
 ======================================================= -->
@@ -1553,6 +1546,30 @@ let criancaAtual = 0;
 
 let tipoEntrada = "Semanada";
 
+
+
+const AVATARES=[];
+for(let i=1;i<=16;i++)AVATARES.push({id:`meninas_${String(i).padStart(2,"0")}`,ficheiro:`meninas_${String(i).padStart(2,"0")}.png`,grupo:"Menina"});
+for(let i=1;i<=16;i++)AVATARES.push({id:`meninos_${String(i).padStart(2,"0")}`,ficheiro:`meninos_${String(i).padStart(2,"0")}.png`,grupo:"Menino"});
+for(let i=1;i<=8;i++)AVATARES.push({id:`outros_${String(i).padStart(2,"0")}`,ficheiro:`outros_${String(i).padStart(2,"0")}.png`,grupo:"Outro"});
+let avatarPendente=null,avatarCallback=null;
+function caminhoAvatar(id){const a=AVATARES.find(x=>x.id===id)||AVATARES[0];return "./"+a.ficheiro;}
+function abrirEscolhaAvatar(inicial,callback){
+ avatarPendente=inicial||"outros_01";avatarCallback=callback;
+ const area=document.getElementById("avatarEscolha");area.innerHTML="";
+ AVATARES.forEach(a=>{const b=document.createElement("button");b.type="button";b.className="avatar-opcao"+(a.id===avatarPendente?" selecionado":"");b.title=a.grupo;
+ const img=document.createElement("img");img.src=caminhoAvatar(a.id);img.alt=a.grupo+" avatar";b.appendChild(img);
+ b.onclick=()=>{avatarPendente=a.id;area.querySelectorAll(".avatar-opcao").forEach(x=>x.classList.remove("selecionado"));b.classList.add("selecionado");};
+ area.appendChild(b);});
+ document.getElementById("avatarModal").style.display="flex";
+}
+function confirmarEscolhaAvatar(){if(!avatarPendente)return;const escolhido=avatarPendente,cb=avatarCallback;document.getElementById("avatarModal").style.display="none";avatarPendente=null;avatarCallback=null;if(typeof cb==="function")cb(escolhido);}
+function cancelarEscolhaAvatar(){document.getElementById("avatarModal").style.display="none";avatarPendente=null;avatarCallback=null;}
+function atualizarAvatarAtual(){
+ const c=atual(),img=document.getElementById("avatarAtual"),nome=document.getElementById("avatarAtualNome");if(!img||!nome)return;
+ const a=AVATARES.find(x=>x.id===(c&&c.avatar))||AVATARES[0];img.src=caminhoAvatar(a.id);nome.textContent=a.grupo+" escolhido";
+}
+function alterarAvatar(){const c=atual();if(!c)return;abrirEscolhaAvatar(c.avatar,id=>{c.avatar=id;guardar();atualizarAvatarAtual();atualizarListaCriancas();});}
 
 /* =========================================================
    FUNÇÕES BÁSICAS
@@ -1753,6 +1770,8 @@ function normalizarDados() {
             ? c.periodicidadeBase
             : "Semanada";
 
+        if (!c.avatar || !AVATARES.some(a => a.id === c.avatar)) c.avatar = "outros_01";
+
         if (!Array.isArray(c.sonhosLista)) {
             c.sonhosLista = [];
         }
@@ -1806,6 +1825,7 @@ function mostrarAplicacao() {
         .classList.remove("oculto");
 
     atualizarListaCriancas();
+    atualizarAvatarAtual();
 
     atualizarTudo();
 
@@ -1821,67 +1841,32 @@ function adicionarCrianca() {
     const nome = prompt("Nome da criança:");
     if (!nome || !nome.trim()) return;
 
-    // O avatar é escolhido logo no início, antes da semanada.
-    const novaCrianca = { nome: nome.trim(), avatar: "outros_01.png" };
-    abrirSeletorAvatar(novaCrianca, function(){
+    abrirEscolhaAvatar("outros_01", (avatarEscolhido) => {
+
         const valor = parseFloat(prompt("Valor da semanada:", "12"));
-        if (isNaN(valor) || valor <= 0) { alert("Valor inválido."); return; }
+
+        if (isNaN(valor) || valor <= 0) {
+            alert("Valor inválido.");
+            return;
+        }
+
         criancas.push({
-            nome: novaCrianca.nome, avatar: novaCrianca.avatar, carteira:0, sonhos:0, tesouro:0, bonus:0,
-            semanadaBase:valor, periodicidadeBase:"Semanada", sonhosLista:[], historico:[]
+            nome: nome.trim(),
+            avatar: avatarEscolhido,
+            carteira: 0,
+            sonhos: 0,
+            tesouro: 0,
+            bonus: 0,
+            semanadaBase: valor,
+            periodicidadeBase: "Semanada",
+            sonhosLista: [],
+            historico: []
         });
-        criancaAtual=criancas.length-1; guardar(); mostrarAplicacao();
+
+        criancaAtual = criancas.length - 1;
+        guardar();
+        mostrarAplicacao();
     });
-
-
-    if (
-        isNaN(valor) ||
-        valor <= 0
-    ) {
-
-        alert(
-            "Valor inválido."
-        );
-
-        return;
-
-    }
-
-
-    criancas.push({
-
-        nome: nome.trim(),
-
-        avatar: "outros_01.png",
-
-        carteira: 0,
-
-        sonhos: 0,
-
-        tesouro: 0,
-
-        bonus: 0,
-
-        semanadaBase: valor,
-
-        periodicidadeBase: "Semanada",
-
-        sonhosLista: [],
-
-        historico: []
-
-    });
-
-
-    criancaAtual =
-        criancas.length - 1;
-
-
-    guardar();
-
-    mostrarAplicacao();
-
-
 }
 
 
@@ -1907,8 +1892,9 @@ function atualizarListaCriancas() {
             option.value =
                 indice;
 
-            option.textContent =
-                "🧒 " + c.nome;
+            const av = AVATARES.find(a => a.id === c.avatar);
+            const icone = av && av.grupo === "Menino" ? "👦" : (av && av.grupo === "Menina" ? "👧" : "🧒");
+            option.textContent = icone + " " + c.nome;
 
             select.appendChild(
                 option
@@ -1937,6 +1923,8 @@ function mudarCrianca() {
 
 
     fecharFormularios();
+
+    atualizarAvatarAtual();
 
     atualizarTudo();
 
@@ -4224,15 +4212,6 @@ function atualizarTudo() {
     if (nomeCriancaCabecalho) {
         nomeCriancaCabecalho.innerText =
             "👋 Olá, " + c.nome;
-    }
-
-    const avatarArea = document.getElementById("avatarCriancaArea");
-    if (avatarArea) {
-        const avatar = c.avatar || "outros_01.png";
-        avatarArea.innerHTML =
-            "<img class=\"avatar-crianca-img\" src=\"" + avatar + "\" alt=\"Avatar de " + c.nome + "\">" +
-            "<div class=\"avatar-crianca-info\"><strong>Avatar</strong><span>Escolhe o que mais se parece contigo.</span>" +
-            "<button type=\"button\" class=\"avatar-escolher-btn\" onclick=\"escolherAvatar(criancaAtual)\">✏️ Alterar avatar</button></div>";
     }
 
 
