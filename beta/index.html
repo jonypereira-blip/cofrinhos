@@ -646,6 +646,63 @@ textarea {
 .dist-euros input{margin:0}
 .dist-pct{text-align:right;color:#6d6682;font-size:13px}
 
+
+/* ===== CORREÇÃO DO ECRÃ DE CRIAÇÃO NO TELEMÓVEL ===== */
+#criancaWizard{
+    align-items:flex-start !important;
+    justify-content:center !important;
+    padding:10px !important;
+    overflow:hidden !important;
+    overscroll-behavior:contain;
+}
+#criancaWizard .avatar-wizard{
+    width:min(520px,100%);
+    max-width:520px;
+    max-height:calc(100dvh - 20px);
+    overflow-y:auto;
+    overflow-x:hidden;
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior:contain;
+    padding:20px 16px 18px;
+    touch-action:pan-y;
+}
+#criancaWizard .avatar-escolha{
+    max-height:250px;
+    overflow-y:auto;
+    overflow-x:hidden;
+    -webkit-overflow-scrolling:touch;
+    touch-action:pan-y;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+}
+#criancaWizard .avatar-opcao{
+    width:auto !important;
+    min-width:0;
+    padding:3px !important;
+    background:#f7f4ff !important;
+    color:inherit !important;
+}
+#criancaWizard .avatar-opcao img{
+    pointer-events:none;
+}
+#criancaWizard .cofre-opcao{
+    cursor:pointer;
+}
+#criancaWizard .confirmar{
+    position:sticky;
+    bottom:0;
+    z-index:5;
+    margin-top:14px;
+    box-shadow:0 -8px 18px rgba(255,255,255,.95);
+}
+#criancaWizard input[type="text"],
+#criancaWizard input[type="number"]{
+    width:100%;
+}
+@media(max-height:700px){
+    #criancaWizard .avatar-escolha{max-height:180px}
+    #criancaWizard .avatar-wizard{padding-top:14px}
+}
+
 </style>
 
 <style>
@@ -1453,7 +1510,7 @@ button {
 <!-- =======================================================
      CRIAÇÃO DA CRIANÇA
 ======================================================= -->
-<div id="criancaWizard" class="popup-fundo">
+<div id="criancaWizard" class="popup-fundo crianca-wizard-fundo">
   <div class="popup avatar-wizard">
     <h2>👋 Vamos criar o teu perfil!</h2>
     <small>1. Nome → 2. Avatar → 3. Cofrinhos → 4. Saldo inicial</small>
